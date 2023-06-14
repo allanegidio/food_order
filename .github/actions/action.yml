@@ -1,0 +1,44 @@
+name: Setup
+description: Setup action with all dependencies like Elixir, Erlang, Mix deps, etc...
+
+runs:
+  using: composite
+  steps:
+    - name: Setup Elixir
+      uses: erlef/setup-beam@v1
+      with:
+        elixir-version: "1.14.4"
+        otp-version: "25"
+
+    - name: Setup Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: "18.16.0"
+
+    - name: Restore dependencies cache
+      uses: actions/cache@v3
+      with:
+        path: deps
+        key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
+        restore-keys: ${{ runner.os }}-mix-
+
+    - name: Restore build cache
+      uses: actions/cache@v3
+      with:
+        path: _build
+        key: ${{ runner.os }}-build-elixir-action
+        restore-keys: ${{ runner.os }}-build-elixir-
+      
+    - name: Restore NPM Cache dependencies
+      uses: actions/cache@v3
+      with:
+        path: assets/node_modules
+        key: ${{ runner.os }}-npm-cache-${{ hashFiles('**/assets/package-lock.json') }}
+        restore-keys: ${{ runner.os }}-npm-cache
+
+    - name: Build project
+      run: |
+        mix deps.get
+        mix compile --warning-as-errors
+        npm install --prefix assets
+      shell: bash

@@ -77,3 +77,12 @@ config :phoenix, :plug_init_mode, :runtime
 
 # Disable swoosh api client as it is only required for production adapters.
 config :swoosh, :api_client, false
+
+# Config to lib git ops works.
+config :git_ops,
+  mix_project: Mix.Project.get!(),
+  changelog_file: "CHANGELOG.md",
+  repository_url: "https://github.com/allanegidio/ex_ads",
+  types: [],
+  manage_mix_version?: true,
+  version_tag_prefix: "v"
