@@ -1,0 +1,35 @@
+name: Release Notes
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  tagged-release:
+    name: "Tagged Release"
+    runs-on: "ubuntu-20.04"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Create Release Notes
+        uses: actions/github-script@v4.0.2
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const fs = require('fs')
+
+            let body = fs.readFileSync(`./CHANGELOG.md`, {encoding: 'utf8'})
+
+            await github.request(`POST /repos/${{ github.repository }}/releases`, {
+              name: "${{ github.ref_name }}",
+              tag_name: "${{ github.ref }}",
+              body: body
+            });
+      - name: Create release branch
+        run: |
+          git checkout ${{ github.ref }}
+          git checkout -b release/${{ github.ref_name }}
+          git push -u origin release/${{ github.ref_name }}
