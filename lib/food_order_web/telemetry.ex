@@ -1,4 +1,8 @@
 defmodule FoodOrderWeb.Telemetry do
+  @moduledoc """
+    Modules focused on telemetry of phoenix app
+  """
+
   use Supervisor
   import Telemetry.Metrics
 
