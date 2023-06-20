@@ -21,22 +21,20 @@
     data-role="product-list"
   >
     <div
-      :for={product_id <- 1..10}
+      :for={product <- @products}
       data-role="product-item"
-      data-id={Integer.to_string(product_id)}
+      data-id={product.id}
       class="shadow-lg rounded-lg p-4 mb-2 hover:bg-neutral-100"
     >
-      <img src={~p"/images/product_1.jpeg"} class="h-40 mb-4 mx-auto" />
+      <img src={~p"/images/#{product.image_url}"} class="h-40 mb-4 mx-auto" />
 
-      <div
-        class="text-center"
-        data-role="product-item-details"
-        data-id={Integer.to_string(product_id)}
-      >
-        <h2 class="mb-4 text-lg">Product Name</h2>
-        <span class="bg-neutral-200 py-1 px-4 rounded-full uppercase text-xs">small</span>
+      <div class="text-center" data-role="product-item-details" data-id={product.id}>
+        <h2 class="mb-4 text-lg"><%= product.name %></h2>
+        <span class="bg-neutral-200 py-1 px-4 rounded-full uppercase text-xs">
+          <%= product.size %>
+        </span>
         <div class="mt-6 flex items-center justify-around">
-          <span class="font-bold text-lg">$10.00</span>
+          <span class="font-bold text-lg"><%= product.price %></span>
           <button class="py-1 px-6 border-2 border-red-500 text-red-500 rounded-full transition hover:bg-red-500 hover:text-neutral-100">
             <span>+</span>
             <span>add</span>
