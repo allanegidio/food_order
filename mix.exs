@@ -64,7 +64,8 @@ defmodule FoodOrder.MixProject do
       {:dialyxir, "~> 1.3", only: [:dev], runtime: false},
       {:sobelow, "~> 0.12", only: [:dev, :test], runtime: false},
       {:git_ops, "~> 2.6.0", only: [:dev]},
-      {:heroicons, "~> 0.5.0"}
+      {:heroicons, "~> 0.5.0"},
+      {:money, "~> 1.12"}
     ]
   end
 
