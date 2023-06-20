@@ -14,7 +14,8 @@ defmodule FoodOrder.ProductsFixtures do
         description: "some description",
         name: "some name",
         price: 42,
-        size: :small
+        size: :small,
+        image_url: "product_#{Enum.random(1..5).jpeg}"
       })
       |> FoodOrder.Products.create_product()
 

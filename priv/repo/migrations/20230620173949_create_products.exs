@@ -8,6 +8,7 @@ defmodule FoodOrder.Repo.Migrations.CreateProducts do
       add :price, :integer
       add :size, :string, default: "small", null: false
       add :description, :text
+      add :image_url, :string
 
       timestamps()
     end
