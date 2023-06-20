@@ -63,7 +63,8 @@ defmodule FoodOrder.MixProject do
       {:excoveralls, "~> 0.10", only: :test},
       {:dialyxir, "~> 1.3", only: [:dev], runtime: false},
       {:sobelow, "~> 0.12", only: [:dev, :test], runtime: false},
-      {:git_ops, "~> 2.6.0", only: [:dev]}
+      {:git_ops, "~> 2.6.0", only: [:dev]},
+      {:heroicons, "~> 0.5.0"}
     ]
   end
 
