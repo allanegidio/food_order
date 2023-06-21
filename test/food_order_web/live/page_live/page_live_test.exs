@@ -3,6 +3,8 @@ defmodule FoodOrderWeb.PageLive.PageLiveTest do
 
   import Phoenix.LiveViewTest
 
+  alias FoodOrder.ProductsFixtures
+
   test "load main hero html", %{conn: conn} do
     {:ok, view, _html} = live(conn, ~p"/")
 
@@ -25,17 +27,33 @@ defmodule FoodOrderWeb.PageLive.PageLiveTest do
   end
 
   test "load products items", %{conn: conn} do
+    product = ProductsFixtures.product_fixture()
+
     {:ok, view, _html} = live(conn, ~p"/")
 
-    assert has_element?(view, "[data-role=product-item][data-id=1]")
-    assert has_element?(view, "[data-role=product-item][data-id=1] > img")
+    assert has_element?(view, "[data-role=product-item][data-id=#{product.id}]")
+    assert has_element?(view, "[data-role=product-item][data-id=#{product.id}] > img")
 
-    assert has_element?(view, "[data-role=product-item-details][data-id=1] > h2", "Product Name")
-    assert has_element?(view, "[data-role=product-item-details][data-id=1] > span", "small")
-    assert has_element?(view, "[data-role=product-item-details][data-id=1] > div > span", "$10")
+    assert has_element?(
+             view,
+             "[data-role=product-item-details][data-id=#{product.id}] > h2",
+             product.name
+           )
+
+    assert has_element?(
+             view,
+             "[data-role=product-item-details][data-id=#{product.id}] > span",
+             Atom.to_string(product.size)
+           )
+
+    assert has_element?(
+             view,
+             "[data-role=product-item-details][data-id=#{product.id}] > div > span",
+             Money.to_string(product.price)
+           )
 
     assert view
-           |> element("[data-role=product-item-details][data-id=1] > div > button")
+           |> element("[data-role=product-item-details][data-id=#{product.id}] > div > button")
            |> render() =~ "add"
   end
 end
