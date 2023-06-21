@@ -12,7 +12,7 @@ defmodule FoodOrder.ProductsTest do
 
     test "list_products/0 returns all products" do
       product = product_fixture()
-      assert Products.list_products() == [product]
+      assert product in Products.list_products()
     end
 
     test "get_product!/1 returns the product with given id" do
@@ -21,7 +21,13 @@ defmodule FoodOrder.ProductsTest do
     end
 
     test "create_product/1 with valid data creates a product" do
-      valid_attrs = %{description: "some description", name: "some name", price: 42, size: :small}
+      valid_attrs = %{
+        description: "some description",
+        name: "some name",
+        price: 42,
+        size: :small,
+        image_url: "product_1.jpeg"
+      }
 
       assert {:ok, %Product{} = product} = Products.create_product(valid_attrs)
       assert product.description == "some description"

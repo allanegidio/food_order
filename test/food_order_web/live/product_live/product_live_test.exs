@@ -4,7 +4,13 @@ defmodule FoodOrderWeb.ProductLive.ProductLiveTest do
   import Phoenix.LiveViewTest
   import FoodOrder.ProductsFixtures
 
-  @create_attrs %{description: "some description", name: "some name", price: 42, size: :small}
+  @create_attrs %{
+    description: "some description",
+    name: "some name",
+    price: 42,
+    size: :small,
+    image_url: "product_1.jpeg"
+  }
   @update_attrs %{
     description: "some updated description",
     name: "some updated name",

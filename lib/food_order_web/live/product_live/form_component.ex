@@ -30,6 +30,7 @@ defmodule FoodOrderWeb.ProductLive.FormComponent do
           options={Product.size_values()}
         />
         <.input field={@form[:description]} type="text" label="Description" />
+        <.input field={@form[:image_url]} type="text" label="Image URL" />
         <:actions>
           <.button phx-disable-with="Saving...">Save Product</.button>
         </:actions>
