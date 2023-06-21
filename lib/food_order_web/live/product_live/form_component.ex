@@ -1,8 +1,8 @@
 defmodule FoodOrderWeb.ProductLive.FormComponent do
   use FoodOrderWeb, :live_component
 
-  alias FoodOrder.Products.Product
   alias FoodOrder.Products
+  alias FoodOrder.Products.Product
 
   @impl true
   def render(assigns) do

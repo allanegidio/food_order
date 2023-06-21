@@ -1,4 +1,8 @@
 defmodule FoodOrder.Products.Product do
+  @moduledoc """
+    Ecto schema from products
+  """
+
   use Ecto.Schema
   import Ecto.Changeset
 
