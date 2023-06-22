@@ -18,6 +18,7 @@ defmodule FoodOrderWeb.Router do
     pipe_through :browser
 
     live "/", PageLive, :index
+    live "/cart", CartLive, :index
 
     live "/products", ProductLive.Index, :index
     live "/products/new", ProductLive.Index, :new

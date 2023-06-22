@@ -1,7 +1,7 @@
 <header class="">
   <nav class="flex items-center justify-between py-3 text-sm">
     <div id="logo">
-      <img src={~p"/images/elixir.png"} class="h-16 w-32" />
+      <img src={~p"/images/logo.svg"} class="h-20 w-40" />
     </div>
     <ul id="menu" class="flex items-center">
       <li class="ml-6">
@@ -22,9 +22,11 @@
       <li class="ml-6">
         Shopping Cart
       </li>
-      <li class="flex ml-6 p-4 bg-yellow-600 rounded-full text-neutral-100 group hover:text-yellow-500 hover:bg-yellow-100 transition">
-        <span>0</span>
-        <Heroicons.shopping_cart solid class="h-5 w-5 stroke-current" />
+      <li class="flex ml-6 p-4 bg-red-500 rounded-full text-neutral-100 transition hover:text-neutral-100 hover:bg-red-300 ">
+        <a href={~p"/cart"} class="flex">
+          <span>0</span>
+          <Heroicons.shopping_cart solid class="h-5 w-5 stroke-current" />
+        </a>
       </li>
     </ul>
   </nav>
