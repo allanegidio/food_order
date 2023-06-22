@@ -1,0 +1,30 @@
+<section class="py-16" data-role="hero">
+  <div class="container mx-auto flex flex-col md:flex-row items-center justify-between">
+    <div data-role="hero-cta">
+      <h6 class="text-lg">Make your order</h6>
+      <h1 class="text-3xl font-bold">Right now!</h1>
+      <button class="px-6 py-2 bg-red-500 text-white mt-5 font-bold rounded-full">
+        Order now
+      </button>
+    </div>
+    <div>
+      <img src={~p"/images/hero.svg"} data-role="hero-img" />
+    </div>
+  </div>
+</section>
+
+<section class="container mx-auto py-8" data-role="product-section">
+  <h1 class="text-lg font-bold mb-8">All foods</h1>
+
+  <div
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+    data-role="product-list"
+  >
+    <.live_component
+      :for={product <- @products}
+      module={ProductItem}
+      id={product.id}
+      product={product}
+    />
+  </div>
+</section>
