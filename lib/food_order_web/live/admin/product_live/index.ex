@@ -1,4 +1,4 @@
-defmodule FoodOrderWeb.ProductLive.Index do
+defmodule FoodOrderWeb.Admin.ProductLive.Index do
   use FoodOrderWeb, :live_view
 
   alias FoodOrder.Products
@@ -33,7 +33,7 @@ defmodule FoodOrderWeb.ProductLive.Index do
   end
 
   @impl true
-  def handle_info({FoodOrderWeb.ProductLive.FormComponent, {:saved, product}}, socket) do
+  def handle_info({FoodOrderWeb.Admin.ProductLive.FormComponent, {:saved, product}}, socket) do
     {:noreply, stream_insert(socket, :products, product)}
   end
 

@@ -2,7 +2,7 @@
   Product <%= @product.id %>
   <:subtitle>This is a product record from your database.</:subtitle>
   <:actions>
-    <.link patch={~p"/products/#{@product}/show/edit"} phx-click={JS.push_focus()}>
+    <.link patch={~p"/admin/products/#{@product}/show/edit"} phx-click={JS.push_focus()}>
       <.button>Edit product</.button>
     </.link>
   </:actions>
@@ -15,20 +15,20 @@
   <:item title="Description"><%= @product.description %></:item>
 </.list>
 
-<.back navigate={~p"/products"}>Back to products</.back>
+<.back navigate={~p"/admin/products"}>Back to products</.back>
 
 <.modal
   :if={@live_action == :edit}
   id="product-modal"
   show
-  on_cancel={JS.patch(~p"/products/#{@product}")}
+  on_cancel={JS.patch(~p"/admin/products/#{@product}")}
 >
   <.live_component
-    module={FoodOrderWeb.ProductLive.FormComponent}
+    module={FoodOrderWeb.Admin.ProductLive.FormComponent}
     id={@product.id}
     title={@page_title}
     action={@live_action}
     product={@product}
-    patch={~p"/products/#{@product}"}
+    patch={~p"/admin/products/#{@product}"}
   />
 </.modal>
