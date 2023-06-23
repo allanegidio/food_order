@@ -1,4 +1,4 @@
-defmodule FoodOrderWeb.ProductLive.Show do
+defmodule FoodOrderWeb.Admin.ProductLive.Show do
   use FoodOrderWeb, :live_view
 
   alias FoodOrder.Products

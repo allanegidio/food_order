@@ -1,4 +1,4 @@
-defmodule FoodOrderWeb.ProductLive.FormComponent do
+defmodule FoodOrderWeb.Admin.ProductLive.FormComponent do
   use FoodOrderWeb, :live_component
 
   alias FoodOrder.Products
@@ -21,7 +21,7 @@ defmodule FoodOrderWeb.ProductLive.FormComponent do
         phx-submit="save"
       >
         <.input field={@form[:name]} type="text" label="Name" />
-        <.input field={@form[:price]} type="number" label="Price" />
+        <.input field={@form[:price]} label="Price" />
         <.input
           field={@form[:size]}
           type="select"
