@@ -12,17 +12,19 @@ defmodule FoodOrderWeb.HeaderComponent do
           <li class="text-[0.8125rem] leading-6 text-zinc-900">
             <%= @current_user.email %>
           </li>
-          <li class="ml-6">
-            <.link
-              href={~p"/admin/products"}
-              class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
-            >
-              Admin Products
-            </.link>
-          </li>
-          <li class="ml-6">
-            Admin Orders
-          </li>
+          <%= if @current_user.role == :ADMIN do %>
+            <li class="ml-6">
+              <.link
+                href={~p"/admin/products"}
+                class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+              >
+                Admin Products
+              </.link>
+            </li>
+            <li class="ml-6">
+              Admin Orders
+            </li>
+          <% end %>
           <li class="ml-6">
             My Orders
           </li>
