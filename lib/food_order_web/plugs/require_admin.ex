@@ -1,4 +1,7 @@
 defmodule FoodOrderWeb.RequireAdmin do
+  @moduledoc """
+    This module is a plug to verify if user logged in is an Admin user.
+  """
   use FoodOrderWeb, :verified_routes
 
   import Phoenix.Component

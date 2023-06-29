@@ -1,4 +1,8 @@
 defmodule FoodOrderWeb.UserAuth do
+  @moduledoc """
+    This module is a plug and it's used on conn and sockets live view.
+    It have a lot functions that help authentication.
+  """
   use FoodOrderWeb, :verified_routes
 
   import Plug.Conn

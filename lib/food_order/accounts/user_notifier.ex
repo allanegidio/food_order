@@ -1,4 +1,7 @@
 defmodule FoodOrder.Accounts.UserNotifier do
+  @moduledoc """
+    All functions about user notifications like deliver email and body email text
+  """
   import Swoosh.Email
 
   alias FoodOrder.Mailer

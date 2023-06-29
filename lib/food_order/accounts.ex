@@ -4,9 +4,9 @@ defmodule FoodOrder.Accounts do
   """
 
   import Ecto.Query, warn: false
-  alias FoodOrder.Repo
 
-  alias FoodOrder.Accounts.{User, UserToken, UserNotifier}
+  alias FoodOrder.Accounts.{User, UserNotifier, UserToken}
+  alias FoodOrder.Repo
 
   ## Database getters
 

@@ -1,4 +1,7 @@
 defmodule FoodOrder.Accounts.User do
+  @moduledoc """
+    This module focus on control users schemas, validations, changesets, and hash password.
+  """
   use Ecto.Schema
   import Ecto.Changeset
 

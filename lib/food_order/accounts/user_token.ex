@@ -1,4 +1,7 @@
 defmodule FoodOrder.Accounts.UserToken do
+  @moduledoc """
+    This module focus on control schema and all features about user token.
+  """
   use Ecto.Schema
   import Ecto.Query
   alias FoodOrder.Accounts.UserToken

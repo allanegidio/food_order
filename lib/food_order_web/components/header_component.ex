@@ -1,4 +1,7 @@
 defmodule FoodOrderWeb.HeaderComponent do
+  @moduledoc """
+    This is a header components. It will have all header components from application.
+  """
   use FoodOrderWeb, :html
 
   def menu(assigns) do
