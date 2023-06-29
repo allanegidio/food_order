@@ -1,9 +1,12 @@
 <.header>
   Listing Products
   <:actions>
-    <.link patch={~p"/admin/products/new"}>
-      <.button>New Product</.button>
-    </.link>
+    <div class="flex items-center gap-2">
+      <.search_by_name name={@name} />
+      <.link patch={~p"/admin/products/new"}>
+        <.button>New Product</.button>
+      </.link>
+    </div>
   </:actions>
 </.header>
 

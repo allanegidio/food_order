@@ -4,8 +4,6 @@ defmodule FoodOrderWeb.RequireAdmin do
   """
   use FoodOrderWeb, :verified_routes
 
-  import Phoenix.Component
-
   def on_mount(:default, _params, _session, socket) do
     current_user = socket.assigns.current_user
 

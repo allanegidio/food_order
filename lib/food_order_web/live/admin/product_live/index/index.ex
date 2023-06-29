@@ -11,7 +11,15 @@ defmodule FoodOrderWeb.Admin.ProductLive.Index do
 
   @impl true
   def handle_params(params, _url, socket) do
-    {:noreply, apply_action(socket, socket.assigns.live_action, params)}
+    live_action = socket.assigns.live_action
+    name = params["name"] || ""
+
+    socket =
+      socket
+      |> apply_action(live_action, params)
+      |> assign(name: name)
+
+    {:noreply, socket}
   end
 
   defp apply_action(socket, :edit, %{"id" => id}) do
@@ -43,5 +51,32 @@ defmodule FoodOrderWeb.Admin.ProductLive.Index do
     {:ok, _} = Products.delete_product(product)
 
     {:noreply, stream_delete(socket, :products, product)}
+  end
+
+  @impl true
+  def handle_event("filter-by-name", params, socket) do
+    products = Products.list_products(params)
+
+    {:noreply, stream(socket, :products, products, reset: true)}
+  end
+
+  def search_by_name(assigns) do
+    ~H"""
+    <form phx-submit="filter-by-name">
+      <div class="relative">
+        <span class="absolute inset-y-2 left-2">
+          <Heroicons.magnifying_glass solid class="h-5 w-5 stroke-current" />
+        </span>
+        <input
+          type="text"
+          autocomplete="off"
+          value={@name}
+          name="name"
+          placeholder="Search by name"
+          class="pl-10 text-sm leading-tight  border rounded-md text-gray-900 border-gray-400 placeholder-gray-600 "
+        />
+      </div>
+    </form>
+    """
   end
 end
