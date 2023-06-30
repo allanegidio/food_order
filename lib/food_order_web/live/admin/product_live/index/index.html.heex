@@ -10,6 +10,14 @@
   </:actions>
 </.header>
 
+<%= if @is_loading do %>
+  <div class="py-3 flex justify-center">
+    <div class="p-2 ring-1 animate-bounce ring-gray-900/5 dark:ring-gray-200 rounded-full">
+      <Heroicons.magnifying_glass solid class="h-6 w-6 text-red-500 stroke-current" />
+    </div>
+  </div>
+<% end %>
+
 <.table
   id="products"
   rows={@streams.products}

@@ -6,7 +6,7 @@ defmodule FoodOrderWeb.Admin.ProductLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    socket = assign(socket, is_loading?: false)
+    socket = assign(socket, is_loading: false)
 
     {:ok, stream(socket, :products, Products.list_products())}
   end
@@ -42,9 +42,38 @@ defmodule FoodOrderWeb.Admin.ProductLive.Index do
     |> assign(:product, nil)
   end
 
+  defp perform_filter(socket, params) do
+    params
+    |> Products.list_products()
+    |> return_response(socket, params)
+  end
+
+  defp return_response([], socket, params) do
+    assigns = [products: [], is_loading: false, name: params["name"]]
+
+    socket
+    |> put_flash(:info, "There is no product with #{params["name"]}")
+    |> assign(assigns)
+  end
+
+  defp return_response(products, socket, params) do
+    assigns = [products: products, is_loading: false]
+
+    assign(socket, assigns)
+  end
+
   @impl true
   def handle_info({FoodOrderWeb.Admin.ProductLive.FormComponent, {:saved, product}}, socket) do
     {:noreply, stream_insert(socket, :products, product)}
+  end
+
+  @impl true
+  def handle_info({:filter_product, params}, socket) do
+    products = Products.list_products(params)
+
+    socket = assign(socket, :is_loading, false)
+
+    {:noreply, stream(socket, :products, products, reset: true)}
   end
 
   @impl true
@@ -57,9 +86,11 @@ defmodule FoodOrderWeb.Admin.ProductLive.Index do
 
   @impl true
   def handle_event("filter_by_name", params, socket) do
-    products = Products.list_products(params)
+    assigns = [products: [], name: params["name"], is_loading: true]
 
-    {:noreply, stream(socket, :products, products, reset: true)}
+    send(self(), {:filter_product, params})
+
+    {:noreply, assign(socket, assigns)}
   end
 
   def search_by_name(assigns) do
