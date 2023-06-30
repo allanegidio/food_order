@@ -172,6 +172,9 @@ defmodule FoodOrderWeb.Admin.ProductLive.ProductLiveTest do
 
       refute has_element?(view, product_1_id)
       refute has_element?(view, product_2_id)
+
+      html = render(view)
+      assert html =~ "There is no product with unknow name"
     end
 
     test "search by name empty", %{conn: conn, products: products} do
@@ -192,6 +195,15 @@ defmodule FoodOrderWeb.Admin.ProductLive.ProductLiveTest do
 
       assert has_element?(view, product_1_id)
       assert has_element?(view, product_2_id)
+    end
+  end
+
+  describe "sort" do
+    setup [:create_products, :register_and_log_in_admin]
+
+    test "sort using name path", %{conn: conn, product: product} do
+      {:ok, view, _html} = live(conn, ~p"/admin/products")
+      assert true == false
     end
   end
 end
