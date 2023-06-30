@@ -6,6 +6,8 @@ defmodule FoodOrderWeb.Admin.ProductLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
+    socket = assign(socket, is_loading?: false)
+
     {:ok, stream(socket, :products, Products.list_products())}
   end
 
@@ -54,7 +56,7 @@ defmodule FoodOrderWeb.Admin.ProductLive.Index do
   end
 
   @impl true
-  def handle_event("filter-by-name", params, socket) do
+  def handle_event("filter_by_name", params, socket) do
     products = Products.list_products(params)
 
     {:noreply, stream(socket, :products, products, reset: true)}
@@ -62,7 +64,7 @@ defmodule FoodOrderWeb.Admin.ProductLive.Index do
 
   def search_by_name(assigns) do
     ~H"""
-    <form phx-submit="filter-by-name">
+    <form phx-submit="filter_by_name">
       <div class="relative">
         <span class="absolute inset-y-2 left-2">
           <Heroicons.magnifying_glass solid class="h-5 w-5 stroke-current" />
