@@ -14,7 +14,12 @@ defmodule FoodOrderWeb.Admin.ProductLive.Index do
   @impl true
   def handle_params(params, _url, socket) do
     live_action = socket.assigns.live_action
+
     name = params["name"] || ""
+    sort_by = params["sort_by"] || "updated_at" |> String.to_atom()
+    sort_order = params["sort_by"] || "desc" |> String.to_atom()
+
+    sort = %{sort_by: sort_by, sort_order: sort_order}
 
     socket =
       socket
@@ -42,24 +47,23 @@ defmodule FoodOrderWeb.Admin.ProductLive.Index do
     |> assign(:product, nil)
   end
 
-  defp perform_filter(socket, params) do
-    params
-    |> Products.list_products()
-    |> return_response(socket, params)
+  @impl true
+  def handle_event("delete", %{"id" => id}, socket) do
+    product = Products.get_product!(id)
+    {:ok, _} = Products.delete_product(product)
+
+    {:noreply, stream_delete(socket, :products, product)}
   end
 
-  defp return_response([], socket, params) do
-    assigns = [products: [], is_loading: false, name: params["name"]]
+  @impl true
+  def handle_event("filter_by_name", params, socket) do
+    assigns = [name: params["name"], is_loading: true]
 
-    socket
-    |> put_flash(:info, "There is no product with #{params["name"]}")
-    |> assign(assigns)
-  end
+    send(self(), {:filter_product, params})
 
-  defp return_response(products, socket, params) do
-    assigns = [products: products, is_loading: false]
+    socket = assign(socket, assigns)
 
-    assign(socket, assigns)
+    {:noreply, stream(socket, :products, [], reset: true)}
   end
 
   @impl true
@@ -73,24 +77,17 @@ defmodule FoodOrderWeb.Admin.ProductLive.Index do
 
     socket = assign(socket, :is_loading, false)
 
-    {:noreply, stream(socket, :products, products, reset: true)}
+    {:noreply, handle_stream_response(socket, params, :products, products)}
   end
 
-  @impl true
-  def handle_event("delete", %{"id" => id}, socket) do
-    product = Products.get_product!(id)
-    {:ok, _} = Products.delete_product(product)
+  defp handle_stream_response(socket, params, :products, []) do
+    socket = put_flash(socket, :error, "There is no product with #{params["name"]}")
 
-    {:noreply, stream_delete(socket, :products, product)}
+    stream(socket, :products, [])
   end
 
-  @impl true
-  def handle_event("filter_by_name", params, socket) do
-    assigns = [products: [], name: params["name"], is_loading: true]
-
-    send(self(), {:filter_product, params})
-
-    {:noreply, assign(socket, assigns)}
+  defp handle_stream_response(socket, _params, :products, collection) do
+    stream(socket, :products, collection)
   end
 
   def search_by_name(assigns) do
