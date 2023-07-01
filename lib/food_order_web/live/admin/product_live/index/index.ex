@@ -8,7 +8,7 @@ defmodule FoodOrderWeb.Admin.ProductLive.Index do
   def mount(_params, _session, socket) do
     socket = assign(socket, is_loading: false)
 
-    {:ok, stream(socket, :products, Products.list_products())}
+    {:ok, socket}
   end
 
   @impl true
@@ -16,17 +16,21 @@ defmodule FoodOrderWeb.Admin.ProductLive.Index do
     live_action = socket.assigns.live_action
 
     name = params["name"] || ""
-    sort_by = params["sort_by"] || "updated_at" |> String.to_atom()
-    sort_order = params["sort_by"] || "desc" |> String.to_atom()
+    sort_by = (params["sort_by"] || "updated_at") |> String.to_atom()
+    sort_order = (params["sort_order"] || "desc") |> String.to_atom()
 
     sort = %{sort_by: sort_by, sort_order: sort_order}
+    options = Map.merge(sort, %{name: name})
+
+    products = Products.list_products(name: name, sort: sort)
 
     socket =
       socket
       |> apply_action(live_action, params)
-      |> assign(name: name)
+      |> assign(is_loading: false)
+      |> assign(options: options)
 
-    {:noreply, socket}
+    {:noreply, stream(socket, :products, products, reset: true)}
   end
 
   defp apply_action(socket, :edit, %{"id" => id}) do
@@ -57,11 +61,12 @@ defmodule FoodOrderWeb.Admin.ProductLive.Index do
 
   @impl true
   def handle_event("filter_by_name", params, socket) do
-    assigns = [name: params["name"], is_loading: true]
+    socket =
+      socket
+      |> assign(is_loading: true)
+      |> update(:options, &Map.put(&1, :name, params["name"]))
 
     send(self(), {:filter_product, params})
-
-    socket = assign(socket, assigns)
 
     {:noreply, stream(socket, :products, [], reset: true)}
   end
@@ -73,6 +78,8 @@ defmodule FoodOrderWeb.Admin.ProductLive.Index do
 
   @impl true
   def handle_info({:filter_product, params}, socket) do
+    params = Map.new(params, fn {k, v} -> {String.to_atom(k), v} end)
+
     products = Products.list_products(params)
 
     socket = assign(socket, :is_loading, false)
@@ -81,7 +88,7 @@ defmodule FoodOrderWeb.Admin.ProductLive.Index do
   end
 
   defp handle_stream_response(socket, params, :products, []) do
-    socket = put_flash(socket, :error, "There is no product with #{params["name"]}")
+    socket = put_flash(socket, :error, "There is no product with #{params[:name]}")
 
     stream(socket, :products, [])
   end
