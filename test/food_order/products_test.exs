@@ -3,8 +3,8 @@ defmodule FoodOrder.ProductsTest do
 
   import FoodOrder.ProductsFixtures
 
-  alias FoodOrder.Products.Product
   alias FoodOrder.Products
+  alias FoodOrder.Products.Product
 
   describe "products" do
     @invalid_attrs %{description: nil, name: nil, price: nil, size: nil}
@@ -79,7 +79,7 @@ defmodule FoodOrder.ProductsTest do
 
     test "list_products/0 returns all product filtered by name", %{products: products} do
       product = Enum.random(products)
-      params = %{"name" => product.name}
+      params = %{name: product.name}
 
       assert product in Products.list_products(params)
     end
