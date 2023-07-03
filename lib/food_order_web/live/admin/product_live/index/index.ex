@@ -6,8 +6,6 @@ defmodule FoodOrderWeb.Admin.ProductLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    socket = assign(socket, is_loading: false)
-
     {:ok, socket}
   end
 
@@ -29,6 +27,7 @@ defmodule FoodOrderWeb.Admin.ProductLive.Index do
       |> apply_action(live_action, params)
       |> assign(is_loading: false)
       |> assign(options: options)
+      |> assign(names: [])
 
     {:noreply, stream(socket, :products, products, reset: true)}
   end
@@ -71,6 +70,14 @@ defmodule FoodOrderWeb.Admin.ProductLive.Index do
     {:noreply, stream(socket, :products, [], reset: true)}
   end
 
+  def handle_event("suggest", %{"name" => name}, socket) do
+    names = Products.list_suggestions_names(name)
+
+    socket = assign(socket, names: names)
+
+    {:noreply, socket}
+  end
+
   @impl true
   def handle_info({FoodOrderWeb.Admin.ProductLive.FormComponent, {:saved, product}}, socket) do
     {:noreply, stream_insert(socket, :products, product)}
@@ -99,7 +106,7 @@ defmodule FoodOrderWeb.Admin.ProductLive.Index do
 
   def search_by_name(assigns) do
     ~H"""
-    <form phx-submit="filter_by_name">
+    <form phx-submit="filter_by_name" phx-change="suggest">
       <div class="relative">
         <span class="absolute inset-y-2 left-2">
           <Heroicons.magnifying_glass solid class="h-5 w-5 stroke-current" />
@@ -109,11 +116,16 @@ defmodule FoodOrderWeb.Admin.ProductLive.Index do
           autocomplete="off"
           value={@name}
           name="name"
+          list="names"
           placeholder="Search by name"
           class="pl-10 text-sm leading-tight  border rounded-md text-gray-900 border-gray-400 placeholder-gray-600 "
         />
       </div>
     </form>
+
+    <datalist id="names">
+      <option :for={name <- @names}><%= name %></option>
+    </datalist>
     """
   end
 end

@@ -46,6 +46,24 @@ defmodule FoodOrder.Products do
   end
 
   @doc """
+  Returns the list of products names based on given name.
+
+  ## Examples
+
+      iex> list_suggestions_names(name)
+      ["product 1", "product 2"...]
+
+  """
+  def list_suggestions_names(name) do
+    name = "%#{name}%"
+
+    Product
+    |> where([p], ilike(p.name, ^name))
+    |> select([p], p.name)
+    |> Repo.all()
+  end
+
+  @doc """
   Gets a single product.
 
   Raises `Ecto.NoResultsError` if the Product does not exist.
