@@ -196,6 +196,20 @@ defmodule FoodOrderWeb.Admin.ProductLive.ProductLiveTest do
       assert has_element?(view, product_1_id)
       assert has_element?(view, product_2_id)
     end
+
+    test "suggest product names", %{conn: conn, products: products} do
+      product_1 = Enum.at(products, 0)
+
+      {:ok, view, _html} = live(conn, ~p"/admin/products")
+
+      assert view |> element("#names") |> render() =~ ~s(<datalist id="names"></datalist>)
+
+      view
+      |> form("[phx-submit=filter_by_name]", %{name: product_1.name})
+      |> render_change()
+
+      assert view |> element("#names") |> render() =~ product_1.name
+    end
   end
 
   describe "sort" do
