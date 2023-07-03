@@ -24,6 +24,15 @@ defmodule FoodOrderWeb.Admin.ProductLive.ProductLiveTest do
     %{product: product}
   end
 
+  defp create_products(_) do
+    products =
+      for _ <- 1..10, into: [] do
+        product_fixture()
+      end
+
+    %{products: products}
+  end
+
   describe "Index" do
     setup [:create_product, :register_and_log_in_admin]
 
@@ -119,6 +128,89 @@ defmodule FoodOrderWeb.Admin.ProductLive.ProductLiveTest do
       html = render(show_live)
       assert html =~ "Product updated successfully"
       assert html =~ "some updated description"
+    end
+  end
+
+  describe "filter products" do
+    setup [:create_products, :register_and_log_in_admin]
+
+    test "search by name", %{conn: conn, products: products} do
+      product_1 = Enum.at(products, 0)
+      product_2 = Enum.at(products, 1)
+
+      {:ok, view, _html} = live(conn, ~p"/admin/products")
+
+      product_1_id = "#products-#{product_1.id}"
+      product_2_id = "#products-#{product_2.id}"
+
+      assert has_element?(view, product_1_id)
+      assert has_element?(view, product_2_id)
+
+      view
+      |> form("[phx-submit=filter_by_name]", %{name: product_1.name})
+      |> render_submit()
+
+      assert has_element?(view, product_1_id)
+      refute has_element?(view, product_2_id)
+    end
+
+    test "search by name without results", %{conn: conn, products: products} do
+      product_1 = Enum.at(products, 0)
+      product_2 = Enum.at(products, 1)
+
+      {:ok, view, _html} = live(conn, ~p"/admin/products")
+
+      product_1_id = "#products-#{product_1.id}"
+      product_2_id = "#products-#{product_2.id}"
+
+      assert has_element?(view, product_1_id)
+      assert has_element?(view, product_2_id)
+
+      view
+      |> form("[phx-submit=filter_by_name]", %{name: "unknow name"})
+      |> render_submit()
+
+      refute has_element?(view, product_1_id)
+      refute has_element?(view, product_2_id)
+
+      html = render(view)
+      assert html =~ "There is no product with unknow name"
+    end
+
+    test "search by name empty", %{conn: conn, products: products} do
+      product_1 = Enum.at(products, 0)
+      product_2 = Enum.at(products, 1)
+
+      {:ok, view, _html} = live(conn, ~p"/admin/products")
+
+      product_1_id = "#products-#{product_1.id}"
+      product_2_id = "#products-#{product_2.id}"
+
+      assert has_element?(view, product_1_id)
+      assert has_element?(view, product_2_id)
+
+      view
+      |> form("[phx-submit=filter_by_name]", %{name: ""})
+      |> render_submit()
+
+      assert has_element?(view, product_1_id)
+      assert has_element?(view, product_2_id)
+    end
+  end
+
+  describe "sort" do
+    setup [:create_products, :register_and_log_in_admin]
+
+    test "list all products sorted by name", %{conn: conn} do
+      {:ok, view, _html} = live(conn, ~p"/admin/products")
+
+      view |> element("th > a", "Name") |> render_click()
+
+      assert_patched(view, ~p"/admin/products?name=&sort_by=name&sort_order=asc")
+
+      view |> element("th > a", "Name") |> render_click()
+
+      assert_patched(view, ~p"/admin/products?name=&sort_by=name&sort_order=desc")
     end
   end
 end

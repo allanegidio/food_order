@@ -1,13 +1,12 @@
 defmodule FoodOrder.ProductsTest do
   use FoodOrder.DataCase
 
+  import FoodOrder.ProductsFixtures
+
   alias FoodOrder.Products
+  alias FoodOrder.Products.Product
 
   describe "products" do
-    alias FoodOrder.Products.Product
-
-    import FoodOrder.ProductsFixtures
-
     @invalid_attrs %{description: nil, name: nil, price: nil, size: nil}
 
     test "list_products/0 returns all products" do
@@ -73,5 +72,57 @@ defmodule FoodOrder.ProductsTest do
       product = product_fixture()
       assert %Ecto.Changeset{} = Products.change_product(product)
     end
+  end
+
+  describe "product filters" do
+    setup :create_products
+
+    test "list_products/1 returns all product filtered by name", %{products: products} do
+      product = Enum.random(products)
+      filters = [name: product.name]
+
+      assert product in Products.list_products(filters)
+    end
+
+    test "list_products/1 returns all product sorted by name", %{products: products} do
+      product =
+        products
+        |> Enum.sort_by(& &1.name, :asc)
+        |> Enum.at(0)
+
+      filters = [sort: %{sort_by: :name, sort_order: :asc}]
+
+      result =
+        filters
+        |> Products.list_products()
+        |> Enum.at(0)
+
+      assert product == result
+    end
+
+    test "list_products/1 returns all product filtered and sorted by name", %{products: products} do
+      product =
+        products
+        |> Enum.sort_by(& &1.name, :asc)
+        |> Enum.at(0)
+
+      filters = [name: product.name, sort: %{sort_by: :name, sort_order: :asc}]
+
+      result =
+        filters
+        |> Products.list_products()
+        |> Enum.at(0)
+
+      assert product == result
+    end
+  end
+
+  defp create_products(_) do
+    products =
+      for _ <- 1..10, into: [] do
+        product_fixture()
+      end
+
+    %{products: products}
   end
 end

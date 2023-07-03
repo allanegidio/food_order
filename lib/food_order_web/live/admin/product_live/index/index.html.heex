@@ -1,0 +1,68 @@
+<.header>
+  Listing Products
+  <:actions>
+    <div class="flex items-center gap-2">
+      <.search_by_name name={@options.name} />
+      <.link patch={~p"/admin/products/new"}>
+        <.button>New Product</.button>
+      </.link>
+    </div>
+  </:actions>
+</.header>
+
+<%= if @is_loading do %>
+  <div class="py-3 flex justify-center">
+    <div class="p-2 ring-1 animate-bounce ring-gray-900/5 dark:ring-gray-200 rounded-full">
+      <Heroicons.magnifying_glass solid class="h-6 w-6 text-red-500 stroke-current" />
+    </div>
+  </div>
+<% end %>
+
+<.table
+  id="products"
+  rows={@streams.products}
+  row_click={fn {_id, product} -> JS.navigate(~p"/admin/products/#{product}") end}
+>
+  <:col :let={{_id, product}} label="Name" options={@options} path={~p"/admin/products"}>
+    <%= product.name %>
+  </:col>
+  <:col :let={{_id, product}} label="Price" options={@options} path={~p"/admin/products"}>
+    <%= product.price %>
+  </:col>
+  <:col :let={{_id, product}} label="Size" options={@options} path={~p"/admin/products"}>
+    <%= product.size %>
+  </:col>
+  <:col :let={{_id, product}} label="Description" options={@options} path={~p"/admin/products"}>
+    <%= product.description %>
+  </:col>
+  <:action :let={{_id, product}}>
+    <div class="sr-only">
+      <.link navigate={~p"/admin/products/#{product}"}>Show</.link>
+    </div>
+    <.link patch={~p"/admin/products/#{product}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, product}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: product.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal
+  :if={@live_action in [:new, :edit]}
+  id="product-modal"
+  show
+  on_cancel={JS.patch(~p"/admin/products")}
+>
+  <.live_component
+    module={FoodOrderWeb.Admin.ProductLive.FormComponent}
+    id={@product.id || :new}
+    title={@page_title}
+    action={@live_action}
+    product={@product}
+    patch={~p"/admin/products"}
+  />
+</.modal>

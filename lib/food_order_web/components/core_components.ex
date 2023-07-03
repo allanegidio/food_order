@@ -444,6 +444,8 @@ defmodule FoodOrderWeb.CoreComponents do
 
   slot :col, required: true do
     attr :label, :string
+    attr :path, :string
+    attr :options, :map
   end
 
   slot :action, doc: "the slot for showing user actions in the last table column"
@@ -459,7 +461,28 @@ defmodule FoodOrderWeb.CoreComponents do
       <table class="w-[40rem] mt-11 sm:w-full">
         <thead class="text-sm text-left leading-6 text-zinc-500">
           <tr>
-            <th :for={col <- @col} class="p-0 pr-6 pb-4 font-normal"><%= col[:label] %></th>
+            <th :for={col <- @col} class="p-0 pr-6 pb-4 font-normal">
+              <%= if col[:path] do %>
+                <.link patch={create_sort_path(col[:path], col[:options], col[:label])}>
+                  <div class="flex items-center">
+                    <span class="pr-2"><%= col[:label] %></span>
+                    <%= if col[:options][:sort_order] == :asc do %>
+                      <Heroicons.bars_arrow_up
+                        solid
+                        class={[is_active(col), "h-5 w-5 stroke-current"]}
+                      />
+                    <% else %>
+                      <Heroicons.bars_arrow_down
+                        solid
+                        class={[is_active(col), "h-5 w-5 stroke-current"]}
+                      />
+                    <% end %>
+                  </div>
+                </.link>
+              <% else %>
+                <% col[:label] %>
+              <% end %>
+            </th>
             <th class="relative p-0 pb-4"><span class="sr-only"><%= gettext("Actions") %></span></th>
           </tr>
         </thead>
@@ -497,6 +520,25 @@ defmodule FoodOrderWeb.CoreComponents do
       </table>
     </div>
     """
+  end
+
+  def create_sort_path(path, options, label) do
+    sort_order = (options[:sort_order] == :desc && :asc) || :desc
+
+    query_string =
+      options
+      |> Map.put(:sort_by, String.downcase(label))
+      |> Map.put(:sort_order, sort_order)
+      |> URI.encode_query()
+
+    "#{path}?#{query_string}"
+  end
+
+  defp is_active(col) do
+    sort_by = col[:options][:sort_by]
+    label = String.downcase(col[:label])
+
+    (Atom.to_string(sort_by) == label && "text-red-500") || "text-gray-500"
   end
 
   @doc """

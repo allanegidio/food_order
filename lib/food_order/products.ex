@@ -4,9 +4,33 @@ defmodule FoodOrder.Products do
   """
 
   import Ecto.Query, warn: false
-  alias FoodOrder.Repo
 
   alias FoodOrder.Products.Product
+  alias FoodOrder.Repo
+
+  @doc """
+  Returns the list of products filtered by filters params.
+
+  ## Examples
+
+      iex> list_products(filters)
+      [%Product{}, ...]
+
+  """
+  def list_products(filters) do
+    query = from(p in Product)
+
+    filters
+    |> Enum.reduce(query, fn
+      {:name, name}, query ->
+        name = "%#{name}%"
+        where(query, [p], ilike(p.name, ^name))
+
+      {:sort, %{sort_by: sort_by, sort_order: sort_order}}, query ->
+        order_by(query, [p], [{^sort_order, ^sort_by}])
+    end)
+    |> Repo.all()
+  end
 
   @doc """
   Returns the list of products.
