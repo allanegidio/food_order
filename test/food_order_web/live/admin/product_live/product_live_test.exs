@@ -201,9 +201,16 @@ defmodule FoodOrderWeb.Admin.ProductLive.ProductLiveTest do
   describe "sort" do
     setup [:create_products, :register_and_log_in_admin]
 
-    test "sort using name path", %{conn: conn, product: product} do
+    test "list all products sorted by name", %{conn: conn} do
       {:ok, view, _html} = live(conn, ~p"/admin/products")
-      assert true == false
+
+      view |> element("th > a", "Name") |> render_click()
+
+      assert_patched(view, ~p"/admin/products?name=&sort_by=name&sort_order=asc")
+
+      view |> element("th > a", "Name") |> render_click()
+
+      assert_patched(view, ~p"/admin/products?name=&sort_by=name&sort_order=desc")
     end
   end
 end

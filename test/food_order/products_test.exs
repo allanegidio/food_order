@@ -77,26 +77,43 @@ defmodule FoodOrder.ProductsTest do
   describe "product filters" do
     setup :create_products
 
-    test "list_products/0 returns all product filtered by name", %{products: products} do
+    test "list_products/1 returns all product filtered by name", %{products: products} do
       product = Enum.random(products)
       filters = [name: product.name]
 
       assert product in Products.list_products(filters)
     end
 
-    test "list_products/0 returns all product sorted by name", %{products: products} do
+    test "list_products/1 returns all product sorted by name", %{products: products} do
       product =
         products
-        |> Enum.sort_by(&(&1.name), :asc)
+        |> Enum.sort_by(& &1.name, :asc)
         |> Enum.at(0)
 
       filters = [sort: %{sort_by: :name, sort_order: :asc}]
 
-      result = filters
+      result =
+        filters
         |> Products.list_products()
         |> Enum.at(0)
 
-      assert product.name == result.name
+      assert product == result
+    end
+
+    test "list_products/1 returns all product filtered and sorted by name", %{products: products} do
+      product =
+        products
+        |> Enum.sort_by(& &1.name, :asc)
+        |> Enum.at(0)
+
+      filters = [name: product.name, sort: %{sort_by: :name, sort_order: :asc}]
+
+      result =
+        filters
+        |> Products.list_products()
+        |> Enum.at(0)
+
+      assert product == result
     end
   end
 
