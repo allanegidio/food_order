@@ -15,9 +15,11 @@ defmodule FoodOrder.ProductsTest do
     end
 
     test "list_suggestions_names/1 returns products names based on given name" do
-      assert "Some Product"
+      product = product_fixture()
+
+      assert "some name"
              |> Products.list_suggestions_names()
-             |> Enum.any?(&String.contains?(&1, "Some Product"))
+             |> Enum.any?(&String.contains?(&1, product.name))
     end
 
     test "get_product!/1 returns the product with given id" do
