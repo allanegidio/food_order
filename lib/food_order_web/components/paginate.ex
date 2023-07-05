@@ -64,7 +64,7 @@ defmodule FoodOrderWeb.Paginate do
 
       <div class="h-8 w-8 mr-1 flex justify-center items center cursor-pointer">
         <.link
-          :if={(@options.page * @options.per_page) < @total_products}
+          :if={@options.page * @options.per_page < @total_products}
           patch={~p"/admin/products?#{Map.update(@options, :page, @options.page, &(&1 + 1))}"}
           data-role="next"
         >
