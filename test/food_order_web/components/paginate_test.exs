@@ -43,7 +43,7 @@ defmodule FoodOrderWeb.PaginateTest do
   describe "select per page" do
     setup [:register_and_log_in_admin]
 
-    test "clicking to change to 20 pages", %{conn: conn} do
+    test "clicking to change to 20 per pages", %{conn: conn} do
       {:ok, view, _html} = live(conn, ~p"/admin/products")
 
       view
