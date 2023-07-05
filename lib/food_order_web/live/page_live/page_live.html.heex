@@ -19,6 +19,8 @@
   <div
     class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
     data-role="product-list"
+    id="product-list"
+    phx-update="append"
   >
     <.live_component
       :for={product <- @products}
@@ -28,3 +30,5 @@
     />
   </div>
 </section>
+
+<div id="load_more_products" phx-hook="LoadMoreProducts" data-page={@page}></div>
