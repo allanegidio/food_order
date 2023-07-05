@@ -220,11 +220,17 @@ defmodule FoodOrderWeb.Admin.ProductLive.ProductLiveTest do
 
       view |> element("th > a", "Name") |> render_click()
 
-      assert_patched(view, ~p"/admin/products?name=&sort_by=name&sort_order=asc")
+      assert_patched(
+        view,
+        ~p"/admin/products?name=&page=1&per_page=4&sort_by=name&sort_order=asc"
+      )
 
       view |> element("th > a", "Name") |> render_click()
 
-      assert_patched(view, ~p"/admin/products?name=&sort_by=name&sort_order=desc")
+      assert_patched(
+        view,
+        ~p"/admin/products?name=&page=1&per_page=4&sort_by=name&sort_order=desc"
+      )
     end
   end
 end

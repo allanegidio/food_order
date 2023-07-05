@@ -17,10 +17,19 @@ defmodule FoodOrderWeb.Admin.ProductLive.Index do
     sort_by = (params["sort_by"] || "updated_at") |> String.to_atom()
     sort_order = (params["sort_order"] || "desc") |> String.to_atom()
 
-    sort = %{sort_by: sort_by, sort_order: sort_order}
-    options = Map.merge(sort, %{name: name})
+    page = String.to_integer(params["page"] || "1")
+    per_page = String.to_integer(params["per_page"] || "4")
+    paginate = %{page: page, per_page: per_page}
 
-    products = Products.list_products(name: name, sort: sort)
+    sort = %{sort_by: sort_by, sort_order: sort_order}
+
+    options =
+      %{}
+      |> Map.merge(sort)
+      |> Map.merge(%{name: name})
+      |> Map.merge(paginate)
+
+    products = Products.list_products(name: name, sort: sort, paginate: paginate)
 
     socket =
       socket
