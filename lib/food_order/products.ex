@@ -28,6 +28,11 @@ defmodule FoodOrder.Products do
 
       {:sort, %{sort_by: sort_by, sort_order: sort_order}}, query ->
         order_by(query, [p], [{^sort_order, ^sort_by}])
+
+      {:paginate, %{page: page, per_page: per_page}}, query ->
+        query
+        |> offset(^((page - 1) * page))
+        |> limit(^per_page)
     end)
     |> Repo.all()
   end
