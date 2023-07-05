@@ -18,7 +18,7 @@ defmodule FoodOrderWeb.Admin.ProductLive.Index do
     sort_order = (params["sort_order"] || "desc") |> String.to_atom()
 
     page = String.to_integer(params["page"] || "1")
-    per_page = String.to_integer(params["per_page"] || "4")
+    per_page = String.to_integer(params["per_page"] || "5")
     paginate = %{page: page, per_page: per_page}
 
     sort = %{sort_by: sort_by, sort_order: sort_order}
@@ -30,6 +30,7 @@ defmodule FoodOrderWeb.Admin.ProductLive.Index do
       |> Map.merge(paginate)
 
     products = Products.list_products(name: name, sort: sort, paginate: paginate)
+    total_products = Products.count_products()
 
     socket =
       socket
@@ -37,6 +38,7 @@ defmodule FoodOrderWeb.Admin.ProductLive.Index do
       |> assign(is_loading: false)
       |> assign(options: options)
       |> assign(names: [])
+      |> assign(total_products: total_products)
 
     {:noreply, stream(socket, :products, products, reset: true)}
   end

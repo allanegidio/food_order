@@ -17,7 +17,7 @@ defmodule FoodOrderWeb.PaginateTest do
 
       assert_patched(
         view,
-        ~p"/admin/products?name=&page=2&per_page=4&sort_by=updated_at&sort_order=desc"
+        ~p"/admin/products?name=&page=2&per_page=5&sort_by=updated_at&sort_order=desc"
       )
 
       view
@@ -26,7 +26,7 @@ defmodule FoodOrderWeb.PaginateTest do
 
       assert_patched(
         view,
-        ~p"/admin/products?name=&page=1&per_page=4&sort_by=updated_at&sort_order=desc"
+        ~p"/admin/products?name=&page=1&per_page=5&sort_by=updated_at&sort_order=desc"
       )
 
       view
@@ -35,7 +35,7 @@ defmodule FoodOrderWeb.PaginateTest do
 
       assert_patched(
         view,
-        ~p"/admin/products?name=&page=2&per_page=4&sort_by=updated_at&sort_order=desc"
+        ~p"/admin/products?name=&page=2&per_page=5&sort_by=updated_at&sort_order=desc"
       )
     end
   end

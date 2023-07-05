@@ -53,19 +53,25 @@ defmodule FoodOrderWeb.Paginate do
                 duration-150 ease-in border-b-2 "
           ]}
         >
-          <.link patch={~p"/admin/products?#{Map.put(@options, :page, current_page)}"}>
+          <.link
+            :if={current_page <= ceil(@total_products / @options.per_page)}
+            patch={~p"/admin/products?#{Map.put(@options, :page, current_page)}"}
+          >
             <%= current_page %>
           </.link>
         </div>
       </div>
 
       <div class="h-8 w-8 mr-1 flex justify-center items center cursor-pointer">
-        <.link
-          patch={~p"/admin/products?#{Map.update(@options, :page, @options.page, &(&1 + 1))}"}
-          data-role="next"
-        >
-          <Heroicons.forward solid class="h-6 w-6 text-red-500 stroke-current" />
-        </.link>
+        <%= if (@options.page * @options.per_page) < @total_products do %>
+          <.link
+            :if={@options.page * @options.per_page < @total_products}
+            patch={~p"/admin/products?#{Map.update(@options, :page, @options.page, &(&1 + 1))}"}
+            data-role="next"
+          >
+            <Heroicons.forward solid class="h-6 w-6 text-red-500 stroke-current" />
+          </.link>
+        <% end %>
       </div>
     </div>
     """

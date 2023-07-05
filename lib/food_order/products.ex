@@ -69,6 +69,19 @@ defmodule FoodOrder.Products do
   end
 
   @doc """
+  Returns the count of all products.
+
+  ## Examples
+
+      iex> count_products()
+      100
+
+  """
+  def count_products do
+    Repo.aggregate(Product, :count, :id)
+  end
+
+  @doc """
   Gets a single product.
 
   Raises `Ecto.NoResultsError` if the Product does not exist.
