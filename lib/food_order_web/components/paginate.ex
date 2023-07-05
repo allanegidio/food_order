@@ -63,15 +63,13 @@ defmodule FoodOrderWeb.Paginate do
       </div>
 
       <div class="h-8 w-8 mr-1 flex justify-center items center cursor-pointer">
-        <%= if (@options.page * @options.per_page) < @total_products do %>
-          <.link
-            :if={@options.page * @options.per_page < @total_products}
-            patch={~p"/admin/products?#{Map.update(@options, :page, @options.page, &(&1 + 1))}"}
-            data-role="next"
-          >
-            <Heroicons.forward solid class="h-6 w-6 text-red-500 stroke-current" />
-          </.link>
-        <% end %>
+        <.link
+          :if={(@options.page * @options.per_page) < @total_products}
+          patch={~p"/admin/products?#{Map.update(@options, :page, @options.page, &(&1 + 1))}"}
+          data-role="next"
+        >
+          <Heroicons.forward solid class="h-6 w-6 text-red-500 stroke-current" />
+        </.link>
       </div>
     </div>
     """
