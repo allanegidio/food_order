@@ -31,7 +31,7 @@ defmodule FoodOrder.Products do
 
       {:paginate, %{page: page, per_page: per_page}}, query ->
         query
-        |> offset(^((page - 1) * page))
+        |> offset(^((page - 1) * per_page))
         |> limit(^per_page)
     end)
     |> Repo.all()
