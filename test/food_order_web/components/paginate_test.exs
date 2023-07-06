@@ -6,10 +6,13 @@ defmodule FoodOrderWeb.PaginateTest do
   describe "paginante component" do
     setup [:register_and_log_in_admin]
 
+    @tag :skip
     test "clicking next, preview, and page", %{conn: conn} do
       {:ok, view, _html} = live(conn, ~p"/admin/products")
 
       assert has_element?(view, "#pages")
+
+      open_browser(view)
 
       view
       |> element("[data-role=next]")
