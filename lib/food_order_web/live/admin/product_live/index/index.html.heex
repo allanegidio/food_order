@@ -2,7 +2,12 @@
   Listing Products
   <:actions>
     <div class="flex items-center gap-2">
-      <.live_component module={FoodOrderWeb.Paginate} id="pages" options={@options} />
+      <.live_component
+        module={FoodOrderWeb.Paginate}
+        id="pages"
+        options={@options}
+        total_products={@total_products}
+      />
       <.search_by_name name={@options.name} names={@names} />
       <.link patch={~p"/admin/products/new"}>
         <.button>New Product</.button>

@@ -31,7 +31,7 @@ defmodule FoodOrder.Products do
 
       {:paginate, %{page: page, per_page: per_page}}, query ->
         query
-        |> offset(^((page - 1) * page))
+        |> offset(^((page - 1) * per_page))
         |> limit(^per_page)
     end)
     |> Repo.all()
@@ -66,6 +66,19 @@ defmodule FoodOrder.Products do
     |> where([p], ilike(p.name, ^name))
     |> select([p], p.name)
     |> Repo.all()
+  end
+
+  @doc """
+  Returns the count of all products.
+
+  ## Examples
+
+      iex> count_products()
+      100
+
+  """
+  def count_products do
+    Repo.aggregate(Product, :count, :id)
   end
 
   @doc """

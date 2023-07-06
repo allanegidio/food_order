@@ -53,7 +53,10 @@ defmodule FoodOrderWeb.Paginate do
                 duration-150 ease-in border-b-2 "
           ]}
         >
-          <.link patch={~p"/admin/products?#{Map.put(@options, :page, current_page)}"}>
+          <.link
+            :if={current_page <= ceil(@total_products / @options.per_page)}
+            patch={~p"/admin/products?#{Map.put(@options, :page, current_page)}"}
+          >
             <%= current_page %>
           </.link>
         </div>
@@ -61,6 +64,7 @@ defmodule FoodOrderWeb.Paginate do
 
       <div class="h-8 w-8 mr-1 flex justify-center items center cursor-pointer">
         <.link
+          :if={@options.page * @options.per_page < @total_products}
           patch={~p"/admin/products?#{Map.update(@options, :page, @options.page, &(&1 + 1))}"}
           data-role="next"
         >
