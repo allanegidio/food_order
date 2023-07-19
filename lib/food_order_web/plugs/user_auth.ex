@@ -1,4 +1,4 @@
-defmodule FoodOrderWeb.UserAuth do
+defmodule FoodOrderWeb.Plugs.UserAuth do
   @moduledoc """
     This module is a plug and it's used on conn and sockets live view.
     It have a lot functions that help authentication.
@@ -137,13 +137,13 @@ defmodule FoodOrderWeb.UserAuth do
       defmodule FoodOrderWeb.PageLive do
         use FoodOrderWeb, :live_view
 
-        on_mount {FoodOrderWeb.UserAuth, :mount_current_user}
+        on_mount {FoodOrderWeb.Plugs.UserAuth, :mount_current_user}
         ...
       end
 
   Or use the `live_session` of your router to invoke the on_mount callback:
 
-      live_session :authenticated, on_mount: [{FoodOrderWeb.UserAuth, :ensure_authenticated}] do
+      live_session :authenticated, on_mount: [{FoodOrderWeb.Plugs.UserAuth, :ensure_authenticated}] do
         live "/profile", ProfileLive, :index
       end
   """
