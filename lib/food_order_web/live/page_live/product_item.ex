@@ -1,6 +1,22 @@
 defmodule FoodOrderWeb.PageLive.ProductItem do
   use FoodOrderWeb, :live_component
 
+  alias FoodOrder.Carts
+
+  def handle_event("add", _assigns, socket) do
+    product = socket.assigns.product
+    cart_id = socket.assigns.cart_id
+
+    Carts.add_product(cart_id, product)
+
+    socket =
+      socket
+      |> put_flash(:info, "Item added to cart")
+      |> push_navigate(to: ~p"/")
+
+    {:noreply, socket}
+  end
+
   def product_info(assigns) do
     ~H"""
     <img src={~p"/images/#{@product.image_url}"} class="h-40 mb-4 mx-auto" />
@@ -12,7 +28,11 @@ defmodule FoodOrderWeb.PageLive.ProductItem do
       </span>
       <div class="mt-6 flex items-center justify-around">
         <span class="font-bold text-lg"><%= @product.price %></span>
-        <button class="py-1 px-6 border-2 border-red-500 text-red-500 rounded-full transition hover:bg-red-500 hover:text-neutral-100">
+        <button
+          phx-click="add"
+          phx-target={@myself}
+          class="py-1 px-6 border-2 border-red-500 text-red-500 rounded-full transition hover:bg-red-500 hover:text-neutral-100"
+        >
           <span>+</span>
           <span>add</span>
         </button>
