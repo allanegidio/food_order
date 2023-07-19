@@ -48,12 +48,6 @@ defmodule FoodOrderWeb.HeaderComponent do
               Log out
             </.link>
           </li>
-          <li class="flex ml-6 p-4 bg-red-500 rounded-full text-neutral-100 transition hover:text-neutral-100 hover:bg-red-300 ">
-            <a href={~p"/cart"} class="flex">
-              <span>0</span>
-              <Heroicons.shopping_cart solid class="h-5 w-5 stroke-current" />
-            </a>
-          </li>
         <% else %>
           <li>
             <.link
@@ -70,6 +64,14 @@ defmodule FoodOrderWeb.HeaderComponent do
             >
               Log in
             </.link>
+          </li>
+        <% end %>
+        <%= if !is_nil(@cart_id) do %>
+          <li class="flex ml-6 p-4 bg-red-500 rounded-full text-neutral-100 transition hover:text-neutral-100 hover:bg-red-300 ">
+            <a href={~p"/cart"} class="flex">
+              <span><%= FoodOrder.Carts.get_cart(@cart_id).total_items %></span>
+              <Heroicons.shopping_cart solid class="h-5 w-5 stroke-current" />
+            </a>
           </li>
         <% end %>
       </ul>
