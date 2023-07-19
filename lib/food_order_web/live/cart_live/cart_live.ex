@@ -1,10 +1,20 @@
 defmodule FoodOrderWeb.CartLive do
+  alias FoodOrder.Products
   use FoodOrderWeb, :live_view
 
   alias FoodOrderWeb.CartLive.CartDetails
+  alias FoodOrder.Carts
 
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, total: 0)}
+    uuid = Ecto.UUID.generate()
+    product = Products.list_products() |> hd
+
+    Carts.create(uuid)
+    Carts.add_product(uuid, product)
+
+    cart = Carts.get_cart(uuid)
+
+    {:ok, assign(socket, cart: cart)}
   end
 
   def empty_cart(assigns) do
