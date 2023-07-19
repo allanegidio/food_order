@@ -3,7 +3,7 @@ defmodule FoodOrderWeb.PageLive.ProductItem do
 
   alias FoodOrder.Carts
 
-  def handle_event("add", _assigns, socket) do
+  def handle_event("add", _params, socket) do
     product = socket.assigns.product
     cart_id = socket.assigns.cart_id
 
