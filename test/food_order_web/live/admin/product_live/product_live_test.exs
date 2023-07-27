@@ -222,14 +222,14 @@ defmodule FoodOrderWeb.Admin.ProductLive.ProductLiveTest do
 
       assert_patched(
         view,
-        ~p"/admin/products?name=&page=1&per_page=5&sort_by=name&sort_order=asc"
+        ~p"/admin/products?name=&sort_by=name&sort_order=asc&page=1&per_page=5"
       )
 
       view |> element("th > a", "Name") |> render_click()
 
       assert_patched(
         view,
-        ~p"/admin/products?name=&page=1&per_page=5&sort_by=name&sort_order=desc"
+        ~p"/admin/products?name=&sort_by=name&sort_order=desc&page=1&per_page=5"
       )
     end
   end

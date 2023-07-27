@@ -1,8 +1,8 @@
 defmodule FoodOrderWeb.CartLive do
   use FoodOrderWeb, :live_view
 
-  alias FoodOrderWeb.CartLive.CartDetails
   alias FoodOrder.Carts
+  alias FoodOrderWeb.CartLive.CartDetails
 
   def mount(_params, _session, socket) do
     cart_id = socket.assigns.cart_id

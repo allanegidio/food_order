@@ -1,4 +1,8 @@
 defmodule FoodOrderWeb.CartLive.CartDetails.Item.CartItem do
+  @moduledoc """
+    Module focused to care about interaction on each line from cart
+  """
+
   use FoodOrderWeb, :live_component
 
   alias FoodOrder.Carts

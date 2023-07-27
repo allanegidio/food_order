@@ -1,4 +1,8 @@
 defmodule FoodOrderWeb.Plugs.CartSession do
+  @moduledoc """
+    Module focused on create cart during on mount
+  """
+
   alias FoodOrder.Accounts
   alias FoodOrder.Carts
 
