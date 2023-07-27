@@ -1,0 +1,53 @@
+<.header>
+  Listing Orders
+  <:actions>
+    <.link patch={~p"/orders/new"}>
+      <.button>New Order</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<div class="h-screen flex pt-2">
+  <.live_component module={SideMenu} id="side-menu" />
+</div>
+
+<.table
+  id="orders"
+  rows={@streams.orders}
+  row_click={fn {_id, order} -> JS.navigate(~p"/orders/#{order}") end}
+>
+  <:col :let={{_id, order}} label="Total price"><%= order.total_price %></:col>
+  <:col :let={{_id, order}} label="Total quantity"><%= order.total_quantity %></:col>
+  <:col :let={{_id, order}} label="Address"><%= order.address %></:col>
+  <:col :let={{_id, order}} label="Phone number"><%= order.phone_number %></:col>
+  <:action :let={{_id, order}}>
+    <div class="sr-only">
+      <.link navigate={~p"/orders/#{order}"}>Show</.link>
+    </div>
+    <.link patch={~p"/orders/#{order}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, order}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: order.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal
+  :if={@live_action in [:new, :edit]}
+  id="order-modal"
+  show
+  on_cancel={JS.patch(~p"/admin/orders")}
+>
+  <.live_component
+    module={FoodOrderWeb.OrderLive.FormComponent}
+    id={@order.id || :new}
+    title={@page_title}
+    action={@live_action}
+    order={@order}
+    patch={~p"/admin/orders"}
+  />
+</.modal>

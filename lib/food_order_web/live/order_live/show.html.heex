@@ -1,0 +1,34 @@
+<.header>
+  Order <%= @order.id %>
+  <:subtitle>This is a order record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/orders/#{@order}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit order</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Total price"><%= @order.total_price %></:item>
+  <:item title="Total quantity"><%= @order.total_quantity %></:item>
+  <:item title="Address"><%= @order.address %></:item>
+  <:item title="Phone number"><%= @order.phone_number %></:item>
+</.list>
+
+<.back navigate={~p"/admin/orders"}>Back to orders</.back>
+
+<.modal
+  :if={@live_action == :edit}
+  id="order-modal"
+  show
+  on_cancel={JS.patch(~p"/orders/#{@order}")}
+>
+  <.live_component
+    module={FoodOrderWeb.OrderLive.FormComponent}
+    id={@order.id}
+    title={@page_title}
+    action={@live_action}
+    order={@order}
+    patch={~p"/orders/#{@order}"}
+  />
+</.modal>
