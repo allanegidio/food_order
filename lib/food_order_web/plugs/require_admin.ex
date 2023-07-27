@@ -1,4 +1,4 @@
-defmodule FoodOrderWeb.RequireAdmin do
+defmodule FoodOrderWeb.Plugs.RequireAdmin do
   @moduledoc """
     This module is a plug to verify if user logged in is an Admin user.
   """

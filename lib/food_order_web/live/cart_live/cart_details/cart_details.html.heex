@@ -4,38 +4,20 @@
     <h1 class="font-bold ml-4 text-2xl">Order Detail</h1>
   </div>
 
-  <div>
-    <div :for={_ <- 1..10} class="flex items-center my-8 shadow-lg p-2 hover:bg-neutral-200">
-      <img src={~p"/images/product_1.jpeg"} class="h-16 w-16 rounded-full" />
-
-      <div class="flex-1 ml-4">
-        <h1>Pizza</h1>
-        <span>Small</span>
-      </div>
-
-      <div class="flex-1">
-        <div class="flex items-center">
-          <button class="p-1 m-2 rounded-full font-bold text-white bg-red-500">-</button>
-          <span>10 Items(s)</span>
-          <button class="p-1 m-2 rounded-full font-bold text-white bg-red-500">+</button>
-        </div>
-      </div>
-
-      <div class="flex flex-col">
-        <span class="font-bold text-lg">$100.00</span>
-        <button class="mx-auto">
-          <Heroicons.trash solid class="w-8 h-8 text-red-500" />
-        </button>
-      </div>
-    </div>
-  </div>
+  <.live_component
+    :for={item <- @cart.items}
+    module={CartItem}
+    id={item.item.id}
+    item={item}
+    cart_id={@cart.id}
+  />
 
   <hr />
 
   <div class="text-right py-4">
     <div>
       <span class="text-lg">Total Amount:</span>
-      <span class="text-2xl font-bold ml-2">$1000.00</span>
+      <span class="text-2xl font-bold ml-2"><%= @cart.total_price %></span>
     </div>
 
     <form action="" class="mt-12">

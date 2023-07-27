@@ -2,7 +2,7 @@ defmodule FoodOrderWeb.UserSessionController do
   use FoodOrderWeb, :controller
 
   alias FoodOrder.Accounts
-  alias FoodOrderWeb.UserAuth
+  alias FoodOrderWeb.Plugs.UserAuth
 
   def create(conn, %{"_action" => "registered"} = params) do
     create(conn, params, "Account created successfully!")

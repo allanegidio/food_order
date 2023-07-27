@@ -1,10 +1,10 @@
-defmodule FoodOrderWeb.UserAuthTest do
+defmodule FoodOrderWeb.Plugs.UserAuthTest do
   use FoodOrderWeb.ConnCase, async: true
 
   import FoodOrder.AccountsFixtures
 
   alias FoodOrder.Accounts
-  alias FoodOrderWeb.UserAuth
+  alias FoodOrderWeb.Plugs.UserAuth
   alias Phoenix.LiveView
 
   @remember_me_cookie "_food_order_web_user_remember_me"

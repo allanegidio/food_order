@@ -1,9 +1,10 @@
 defmodule FoodOrderWeb.PageLive.PageLiveTest do
   use FoodOrderWeb.ConnCase
 
-  import Phoenix.LiveViewTest
-
   alias FoodOrder.ProductsFixtures
+
+  import Phoenix.LiveViewTest
+  import FoodOrder.ProductsFixtures
 
   defp create_products(_) do
     products =
@@ -90,6 +91,23 @@ defmodule FoodOrderWeb.PageLive.PageLiveTest do
       Enum.each(product_page_2, fn product ->
         assert has_element?(view, "[data-role=product-item][data-id=#{product.id}]")
       end)
+    end
+
+    @tag :skip
+    test "add a new item on cart", %{conn: conn} do
+      product = product_fixture()
+
+      {:ok, view, _html} = live(conn, ~p"/")
+
+      product_element = "[data-id=#{product.id}]>div>div>button"
+
+      {:ok, _view, html} =
+        view
+        |> element(product_element)
+        |> render_click()
+        |> follow_redirect(conn, ~p"/")
+
+      assert html =~ "Item added to cart"
     end
   end
 end

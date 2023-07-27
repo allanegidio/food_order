@@ -1,10 +1,19 @@
 defmodule FoodOrderWeb.CartLive do
   use FoodOrderWeb, :live_view
 
+  alias FoodOrder.Carts
   alias FoodOrderWeb.CartLive.CartDetails
 
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, total: 0)}
+    cart_id = socket.assigns.cart_id
+
+    cart = Carts.get_cart(cart_id)
+
+    {:ok, assign(socket, cart: cart)}
+  end
+
+  def handle_info({:update, cart}, socket) do
+    {:noreply, assign(socket, cart: cart)}
   end
 
   def empty_cart(assigns) do

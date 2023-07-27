@@ -16,6 +16,8 @@ defmodule FoodOrder.Application do
       {Phoenix.PubSub, name: FoodOrder.PubSub},
       # Start Finch
       {Finch, name: FoodOrder.Finch},
+      # Start Cart Server
+      FoodOrder.Carts.Server.CartServer,
       # Start the Endpoint (http/https)
       FoodOrderWeb.Endpoint
       # Start a worker by calling: FoodOrder.Worker.start_link(arg)
