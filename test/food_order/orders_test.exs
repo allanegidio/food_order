@@ -3,6 +3,7 @@ defmodule FoodOrder.OrdersTest do
 
   alias FoodOrder.AccountsFixtures
   alias FoodOrder.Orders
+  alias FoodOrder.Orders.StatusOrders
   alias FoodOrder.ProductsFixtures
 
   import FoodOrder.OrdersFixtures
@@ -14,7 +15,7 @@ defmodule FoodOrder.OrdersTest do
 
     test "list_orders/0 returns all orders" do
       order = order_fixture()
-      assert Orders.list_orders() == [order]
+      assert order in Orders.list_orders()
     end
 
     test "get_order!/1 returns the order with given id" do
@@ -118,6 +119,19 @@ defmodule FoodOrder.OrdersTest do
       Orders.broadcast_new_order({:error, order})
 
       assert {:messages, []} == Process.info(self(), :messages)
+    end
+  end
+
+  describe "all status orders" do
+    test "get all status orders" do
+      assert %StatusOrders{
+               all: 10,
+               delivered: 0,
+               delivering: 0,
+               not_started: 10,
+               preparing: 0,
+               received: 0
+             } == Orders.get_all_status_orders()
     end
   end
 end

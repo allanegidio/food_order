@@ -7,6 +7,8 @@ defmodule FoodOrder.Orders do
   alias FoodOrder.Repo
 
   alias FoodOrder.Orders.Order
+  alias FoodOrder.Orders.OrderQuery
+  alias FoodOrder.Orders.StatusOrders
   alias FoodOrder.Orders.Events.NewOrder
 
   @doc """
@@ -101,6 +103,32 @@ defmodule FoodOrder.Orders do
   """
   def change_order(%Order{} = order, attrs \\ %{}) do
     Order.changeset(order, attrs)
+  end
+
+  @doc """
+  Returns the all status orders.
+
+  ## Examples
+
+      iex> get_all_status_orders()
+      %StatusOrders{not_started: 10, ...}
+
+  """
+  def get_all_status_orders() do
+    not_started_query = OrderQuery.filter_by_status(Order, :not_started)
+    received_query = OrderQuery.filter_by_status(Order, :received)
+    preparing_query = OrderQuery.filter_by_status(Order, :preparing)
+    delivering_query = OrderQuery.filter_by_status(Order, :delivering)
+    delivered_query = OrderQuery.filter_by_status(Order, :delivered)
+
+    %StatusOrders{
+      all: Repo.aggregate(Order, :count, :id),
+      not_started: Repo.aggregate(not_started_query, :count, :id),
+      received: Repo.aggregate(received_query, :count, :id),
+      preparing: Repo.aggregate(preparing_query, :count, :id),
+      delivering: Repo.aggregate(delivering_query, :count, :id),
+      delivered: Repo.aggregate(delivered_query, :count, :id)
+    }
   end
 
   @doc """
