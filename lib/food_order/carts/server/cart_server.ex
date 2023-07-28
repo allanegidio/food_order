@@ -32,6 +32,12 @@ defmodule FoodOrder.Carts.Server.CartServer do
     {:noreply, name}
   end
 
+  def handle_cast({:delete_cart, cart_id}, name) do
+    :ets.delete(name, cart_id)
+
+    {:noreply, name}
+  end
+
   def handle_cast({:add_product, cart_id, product}, name) do
     {:ok, cart} = find_cart(name, cart_id)
     cart = HandleCarts.add_product(cart, product)

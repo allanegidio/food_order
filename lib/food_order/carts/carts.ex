@@ -9,6 +9,10 @@ defmodule FoodOrder.Carts do
     GenServer.cast(@name, {:create_cart, cart_id})
   end
 
+  def delete(cart_id) do
+    GenServer.cast(@name, {:delete_cart, cart_id})
+  end
+
   def add_product(cart_id, product) do
     GenServer.cast(@name, {:add_product, cart_id, product})
   end

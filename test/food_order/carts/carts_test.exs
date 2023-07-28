@@ -11,6 +11,16 @@ defmodule FoodOrder.CartsTest do
     end
   end
 
+  describe "delete" do
+    test "delete a created cart" do
+      cart_id = Ecto.UUID.generate()
+
+      Carts.create(cart_id)
+
+      assert :ok == Carts.delete(cart_id)
+    end
+  end
+
   describe "add product" do
     test "add product on cart" do
       product = ProductsFixtures.product_fixture()
