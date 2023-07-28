@@ -7,6 +7,7 @@ defmodule FoodOrder.Orders do
   alias FoodOrder.Repo
 
   alias FoodOrder.Orders.Order
+  alias FoodOrder.Orders.Events.NewOrder
 
   @doc """
   Returns the list of orders.
@@ -101,4 +102,14 @@ defmodule FoodOrder.Orders do
   def change_order(%Order{} = order, attrs \\ %{}) do
     Order.changeset(order, attrs)
   end
+
+  @doc """
+    Subscribes to new order pub messages
+  """
+  defdelegate subscribe_new_orders, to: NewOrder, as: :subscribe
+
+  @doc """
+    Broadcast new order to topic
+  """
+  defdelegate broadcast_new_order(new_order), to: NewOrder, as: :broadcast
 end
