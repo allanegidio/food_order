@@ -5,6 +5,7 @@ defmodule FoodOrderWeb.Admin.OrderLive.Index do
   alias FoodOrder.Orders.Order
 
   alias FoodOrderWeb.Admin.OrderLive.Index.SideMenu
+  alias FoodOrderWeb.Admin.OrderLive.Index.Layer
 
   @impl true
   def mount(_params, _session, socket) do

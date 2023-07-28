@@ -3,11 +3,12 @@ defmodule FoodOrder.OrdersTest do
 
   alias FoodOrder.AccountsFixtures
   alias FoodOrder.Orders
+  alias FoodOrder.ProductsFixtures
+
+  import FoodOrder.OrdersFixtures
 
   describe "orders" do
     alias FoodOrder.Orders.Order
-
-    import FoodOrder.OrdersFixtures
 
     @invalid_attrs %{address: nil, phone_number: nil, total_price: nil, total_quantity: nil}
 
@@ -23,13 +24,21 @@ defmodule FoodOrder.OrdersTest do
 
     test "create_order/1 with valid data creates a order" do
       user = AccountsFixtures.user_fixture()
+      product_1 = ProductsFixtures.product_fixture()
+      product_2 = ProductsFixtures.product_fixture()
+
+      order_items = [
+        %{product_id: product_1.id, quantity: 2},
+        %{product_id: product_2.id, quantity: 1}
+      ]
 
       valid_attrs = %{
         address: "some address",
         phone_number: "some phone_number",
         total_price: 42,
         total_quantity: 42,
-        user_id: user.id
+        user_id: user.id,
+        order_items: order_items
       }
 
       assert {:ok, %Order{} = order} = Orders.create_order(valid_attrs)
@@ -76,6 +85,39 @@ defmodule FoodOrder.OrdersTest do
       order = order_fixture()
 
       assert %Ecto.Changeset{} = Orders.change_order(order)
+    end
+  end
+
+  describe "Subscribe pubsub" do
+    test "subscribe to receive new events of new order" do
+      Orders.subscribe_new_orders()
+
+      assert {:messages, []} == Process.info(self(), :messages)
+    end
+
+    test "receive new order message" do
+      Orders.subscribe_new_orders()
+
+      assert {:messages, []} == Process.info(self(), :messages)
+
+      order = order_fixture()
+
+      Orders.broadcast_new_order({:ok, order})
+
+      assert {:messages, [{:new_order, order}]} == Process.info(self(), :messages)
+    end
+
+    @tag :esse
+    test "receive new order error message" do
+      Orders.subscribe_new_orders()
+
+      assert {:messages, []} == Process.info(self(), :messages)
+
+      order = order_fixture()
+
+      Orders.broadcast_new_order({:error, order})
+
+      assert {:messages, []} == Process.info(self(), :messages)
     end
   end
 end

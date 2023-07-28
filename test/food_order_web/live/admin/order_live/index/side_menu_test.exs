@@ -5,7 +5,7 @@ defmodule FoodOrderWeb.Admin.OrderLive.Index.SideMenuTest do
   describe "side menu test" do
     setup [:register_and_log_in_admin]
 
-    test "render main elements", %{conn: conn} do
+    test "render side element elements", %{conn: conn} do
       {:ok, view, _html} = live(conn, ~p"/admin/orders")
       assert has_element?(view, "#side-menu")
 
