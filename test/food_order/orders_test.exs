@@ -22,7 +22,6 @@ defmodule FoodOrder.OrdersTest do
       assert Orders.get_order!(order.id) == order
     end
 
-    @tag :esse
     test "update_order_status/1 return order with status updated" do
       order = OrdersFixtures.order_fixture()
 

@@ -16,7 +16,7 @@ defmodule FoodOrder.Orders.Events.UpdateOrder do
 
   def subscribe_user(user_id), do: PubSub.subscribe(@pubsub, @topic_user <> ":#{user_id}")
 
-  def broadcast_user({:ok, order} = result) do
+  def broadcast_user({:ok, order}) do
     PubSub.broadcast(@pubsub, @topic_user <> ":#{order.user_id}", {:update_user_order, order})
   end
 
@@ -24,7 +24,7 @@ defmodule FoodOrder.Orders.Events.UpdateOrder do
 
   def subscribe_order(order_id), do: PubSub.subscribe(@pubsub, @topic_order <> ":#{order_id}")
 
-  def broadcast_order({:ok, order} = result) do
+  def broadcast_order({:ok, order}) do
     PubSub.broadcast(@pubsub, @topic_order <> ":#{order.id}", {:update_order, order})
   end
 
