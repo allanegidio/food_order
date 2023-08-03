@@ -10,6 +10,7 @@ defmodule FoodOrder.Orders do
   alias FoodOrder.Orders.OrderQuery
   alias FoodOrder.Orders.StatusOrders
   alias FoodOrder.Orders.Events.NewOrder
+  alias FoodOrder.Orders.Events.UpdateOrder
 
   @doc """
   Returns the list of orders.
@@ -77,6 +78,24 @@ defmodule FoodOrder.Orders do
   end
 
   @doc """
+  Updates a order.
+
+  ## Examples
+
+      iex> update_order(order, %{field: new_value})
+      {:ok, %Order{}}
+
+      iex> update_order(order, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_order_status(%Order{} = order, status) do
+    order
+    |> Order.changeset(%{status: status})
+    |> Repo.update()
+  end
+
+  @doc """
   Deletes a order.
 
   ## Examples
@@ -140,4 +159,40 @@ defmodule FoodOrder.Orders do
     Broadcast new order to topic
   """
   defdelegate broadcast_new_order(new_order), to: NewOrder, as: :broadcast
+
+  @doc """
+    Subscribes to update admin order pub messages
+  """
+  defdelegate subscribe_update_admin_orders, to: UpdateOrder, as: :subscribe_admin
+
+  @doc """
+    Broadcast update admin order to topic
+  """
+  defdelegate broadcast_update_admin_order(updated_order, old_status),
+    to: UpdateOrder,
+    as: :broadcast_admin
+
+  @doc """
+    Subscribes to update user order pub messages
+  """
+  defdelegate subscribe_update_user_orders(user_id), to: UpdateOrder, as: :subscribe_user
+
+  @doc """
+    Broadcast update user order to topic
+  """
+  defdelegate broadcast_update_user_order(updated_order),
+    to: UpdateOrder,
+    as: :broadcast_user
+
+  @doc """
+    Subscribes to update order pub messages
+  """
+  defdelegate subscribe_update_order(order_id), to: UpdateOrder, as: :subscribe_order
+
+  @doc """
+    Broadcast update order to topic
+  """
+  defdelegate broadcast_update_order(updated_order),
+    to: UpdateOrder,
+    as: :broadcast_order
 end
