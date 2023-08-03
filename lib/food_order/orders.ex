@@ -11,6 +11,7 @@ defmodule FoodOrder.Orders do
   alias FoodOrder.Orders.StatusOrders
   alias FoodOrder.Orders.Events.NewOrder
   alias FoodOrder.Orders.Events.UpdateOrder
+  alias FoodOrder.Orders.Handlers.HandleCreateOrder
 
   @doc """
   Returns the list of orders.
@@ -149,6 +150,8 @@ defmodule FoodOrder.Orders do
       delivered: Repo.aggregate(delivered_query, :count, :id)
     }
   end
+
+  defdelegate create_cart_order(params), to: HandleCreateOrder, as: :execute
 
   @doc """
     Subscribes to new order pub messages
