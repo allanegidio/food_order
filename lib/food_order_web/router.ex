@@ -79,6 +79,10 @@ defmodule FoodOrderWeb.Router do
 
       live "/orders/:id", OrderLive.Show, :show
       live "/orders/:id/show/edit", OrderLive.Show, :edit
+
+      scope "/customer", Customer do
+        live "/orders", OrderLive.Index, :index
+      end
     end
 
     live_session :require_admin,
