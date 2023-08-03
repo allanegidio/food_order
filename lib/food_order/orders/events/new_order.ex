@@ -4,7 +4,7 @@ defmodule FoodOrder.Orders.Events.NewOrder do
   @pubsub FoodOrder.PubSub
   @topic "new_order"
 
-  def subscribe(), do: PubSub.subscribe(@pubsub, "new_order")
+  def subscribe(), do: PubSub.subscribe(@pubsub, @topic)
 
   def broadcast({:ok, order} = result) do
     PubSub.broadcast(@pubsub, @topic, {:new_order, order})
