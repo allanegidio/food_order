@@ -10,7 +10,6 @@ defmodule FoodOrderWeb.Admin.OrderLive.Index.SideMenu do
       socket
       |> assign(assigns)
       |> assign(status_orders: all_status_orders)
-      |> IO.inspect()
 
     {:ok, socket}
   end
