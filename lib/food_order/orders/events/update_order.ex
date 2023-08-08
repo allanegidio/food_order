@@ -8,7 +8,7 @@ defmodule FoodOrder.Orders.Events.UpdateOrder do
 
   def subscribe_admin(), do: PubSub.subscribe(@pubsub, @topic_admin)
 
-  def broadcast_admin({:ok, order} = result, old_status) do
+  def broadcast_admin({:ok, order}, old_status) do
     PubSub.broadcast(@pubsub, @topic_admin, {:update_admin_order, order, old_status})
   end
 

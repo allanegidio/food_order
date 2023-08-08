@@ -8,7 +8,7 @@ defmodule FoodOrder.Orders.Handlers.HandleCreateOrder do
     attrs = build_attrs(cart, params)
 
     case Orders.create_order(attrs) do
-      {:ok, order} = result ->
+      {:ok, _order} = result ->
         NewOrder.broadcast(result)
         Carts.delete(current_user_id)
 

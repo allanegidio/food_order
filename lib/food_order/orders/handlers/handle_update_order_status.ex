@@ -1,8 +1,6 @@
 defmodule FoodOrder.Orders.Handlers.HandleUpdateOrderStatus do
   alias FoodOrder.Orders.Events.UpdateOrder
-  alias FoodOrder.Orders.Order
   alias FoodOrder.Orders
-  alias FoodOrder.Repo
 
   def execute(order_id, old_status, new_status) do
     order = Orders.get_order!(order_id)

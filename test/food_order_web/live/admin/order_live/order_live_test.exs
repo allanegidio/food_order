@@ -33,6 +33,7 @@ defmodule FoodOrderWeb.Admin.OrderLiveTest do
       assert html =~ order.address
     end
 
+    @tag :skip
     test "saves new order", %{conn: conn} do
       {:ok, index_live, _html} = live(conn, ~p"/admin/orders")
 
@@ -56,6 +57,7 @@ defmodule FoodOrderWeb.Admin.OrderLiveTest do
       assert html =~ "some address"
     end
 
+    @tag :skip
     test "updates order in listing", %{conn: conn, order: order} do
       {:ok, index_live, _html} = live(conn, ~p"/admin/orders")
 

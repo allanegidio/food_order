@@ -1,5 +1,4 @@
 defmodule FoodOrderWeb.CartLive.CartDetails do
-  alias FoodOrder.Carts
   use FoodOrderWeb, :live_component
 
   alias FoodOrder.Orders
