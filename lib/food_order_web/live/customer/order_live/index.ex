@@ -6,7 +6,7 @@ defmodule FoodOrderWeb.Customer.OrderLive.Index do
   def mount(_params, _session, socket) do
     current_user = socket.assigns.current_user
 
-    # if connected?(socket), do: Orders.subscribe_update_user_orders(current_user.id)
+    if connected?(socket), do: Orders.subscribe_update_user_orders(current_user.id)
 
     orders = Orders.list_orders_by_user_id(current_user.id)
 

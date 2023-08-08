@@ -10,6 +10,7 @@ defmodule FoodOrder.Orders do
   alias FoodOrder.Orders.Events.NewOrder
   alias FoodOrder.Orders.Events.UpdateOrder
   alias FoodOrder.Orders.Handlers.HandleCreateOrder
+  alias FoodOrder.Orders.Handlers.HandleUpdateOrderStatus
 
   import Ecto.Query, warn: false
 
@@ -191,7 +192,17 @@ defmodule FoodOrder.Orders do
     }
   end
 
-  defdelegate create_cart_order(params), to: HandleCreateOrder, as: :execute
+  @doc """
+    Create order event
+  """
+  defdelegate handle_create_order(params), to: HandleCreateOrder, as: :execute
+
+  @doc """
+    Update order status event
+  """
+  defdelegate handle_update_order_status(order_id, old_status, new_status),
+    to: HandleUpdateOrderStatus,
+    as: :execute
 
   @doc """
     Subscribes to new order pub messages

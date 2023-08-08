@@ -5,7 +5,7 @@ defmodule FoodOrderWeb.CartLive.CartDetails do
   alias FoodOrderWeb.CartLive.CartDetails.Item.CartItem
 
   def handle_event("create_order", unsigned_params, socket) do
-    case Orders.create_cart_order(unsigned_params) do
+    case Orders.handle_create_order(unsigned_params) do
       {:ok, _order} ->
         socket =
           socket
