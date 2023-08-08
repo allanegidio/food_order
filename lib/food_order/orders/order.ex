@@ -14,7 +14,7 @@ defmodule FoodOrder.Orders.Order do
   schema "orders" do
     field(:address, :string)
     field(:phone_number, :string)
-    field(:total_price, :integer)
+    field(:total_price, Money.Ecto.Amount.Type)
     field(:total_quantity, :integer)
     field(:status, Ecto.Enum, values: @status_values, default: :not_started, null: false)
 
