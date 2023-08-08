@@ -34,7 +34,12 @@ defmodule FoodOrderWeb.HeaderComponent do
             </li>
           <% end %>
           <li class="ml-6">
-            My Orders
+            <.link
+              href={~p"/customer/orders"}
+              class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+            >
+              Orders
+            </.link>
           </li>
           <li class="ml-6">
             <.link
