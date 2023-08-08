@@ -140,7 +140,7 @@ defmodule FoodOrder.OrdersTest do
 
       Orders.broadcast_update_admin_order({:ok, %{status: :preparing}}, :not_started)
 
-      assert {:messages, [{:update_admin_order, %{status: :preparing}, :not_started}]} ==
+      assert {:messages, [{:updated_admin_order, %{status: :preparing}, :not_started}]} ==
                Process.info(self(), :messages)
     end
 
@@ -153,7 +153,7 @@ defmodule FoodOrder.OrdersTest do
 
       Orders.broadcast_update_user_order({:ok, %{status: :preparing, user_id: user.id}})
 
-      assert {:messages, [{:update_user_order, %{status: :preparing, user_id: user.id}}]} ==
+      assert {:messages, [{:updated_user_order, %{status: :preparing, user_id: user.id}}]} ==
                Process.info(self(), :messages)
     end
 
@@ -166,7 +166,7 @@ defmodule FoodOrder.OrdersTest do
 
       Orders.broadcast_update_order({:ok, %{status: :preparing, id: order.id}})
 
-      assert {:messages, [{:update_order, %{status: :preparing, id: order.id}}]} ==
+      assert {:messages, [{:updated_order, %{status: :preparing, id: order.id}}]} ==
                Process.info(self(), :messages)
     end
   end
