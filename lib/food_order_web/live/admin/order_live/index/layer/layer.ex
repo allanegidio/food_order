@@ -1,41 +1,17 @@
 defmodule FoodOrderWeb.Admin.OrderLive.Index.Layer do
   use FoodOrderWeb, :live_component
 
+  alias FoodOrder.Orders
   alias FoodOrderWeb.Admin.OrderLive.Index.Layer.Card
 
-  @status [:NOT_STARTED, :DELIVERED]
-
   def update(assigns, socket) do
-    cards = [
-      %{
-        id: Ecto.UUID.generate(),
-        status: @status |> Enum.shuffle() |> hd(),
-        user: %{email: "admin@domain.com"},
-        total_price: Money.new(10_000),
-        total_quantity: 2,
-        updated_at: NaiveDateTime.utc_now(),
-        order_items: [
-          %{
-            id: Ecto.UUID.generate(),
-            quantity: 10,
-            product: %{
-              name: "Produto Maroto",
-              price: Money.new(200)
-            }
-          },
-          %{
-            id: Ecto.UUID.generate(),
-            quantity: 100,
-            product: %{
-              name: "Produto Maroto 2",
-              price: Money.new(500)
-            }
-          }
-        ]
-      }
-    ]
+    status = String.to_atom(assigns.id)
+    orders = Orders.list_orders_by_status(status) |> IO.inspect()
 
-    socket = socket |> assign(assigns) |> assign(cards: cards)
+    socket =
+      socket
+      |> assign(assigns)
+      |> assign(cards: orders)
 
     {:ok, socket}
   end

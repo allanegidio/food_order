@@ -47,6 +47,26 @@ defmodule FoodOrder.Orders do
   end
 
   @doc """
+  Returns the list of orders by status.
+
+  ## Examples
+
+      iex> list_orders_by_user_id(:not_started)
+      [%Order{status: :not_started}, ...]
+
+  """
+  def list_orders_by_status(status) do
+    query =
+      from(
+        o in Order,
+        where: o.status == ^status,
+        preload: [:user, order_items: [:product]]
+      )
+
+    Repo.all(query)
+  end
+
+  @doc """
   Gets a single order.
 
   Raises `Ecto.NoResultsError` if the Order does not exist.
