@@ -3,15 +3,15 @@ defmodule FoodOrder.Orders do
   The Orders context.
   """
 
-  import Ecto.Query, warn: false
   alias FoodOrder.Repo
-
   alias FoodOrder.Orders.Order
   alias FoodOrder.Orders.OrderQuery
   alias FoodOrder.Orders.StatusOrders
   alias FoodOrder.Orders.Events.NewOrder
   alias FoodOrder.Orders.Events.UpdateOrder
   alias FoodOrder.Orders.Handlers.HandleCreateOrder
+
+  import Ecto.Query, warn: false
 
   @doc """
   Returns the list of orders.
@@ -24,6 +24,26 @@ defmodule FoodOrder.Orders do
   """
   def list_orders do
     Repo.all(Order)
+  end
+
+  @doc """
+  Returns the list of orders by user id.
+
+  ## Examples
+
+      iex> list_orders_by_user_id(user_id)
+      [%Order{}, ...]
+
+  """
+  def list_orders_by_user_id(user_id) do
+    query =
+      from(
+        o in Order,
+        where: o.user_id == ^user_id,
+        order_by: [desc: o.inserted_at]
+      )
+
+    Repo.all(query)
   end
 
   @doc """
