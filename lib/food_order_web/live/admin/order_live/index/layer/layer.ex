@@ -39,7 +39,7 @@ defmodule FoodOrderWeb.Admin.OrderLive.Index.Layer do
         <%= Phoenix.Naming.humanize(@id) %>
       </h3>
 
-      <ul class="mt-2" id={@id} phx-hook="Drag">
+      <ul class="mt-2" id={@id} phx-hook="Drag" phx-target={@myself}>
         <.live_component :for={card <- @cards} module={Card} id={card.id} card={card} />
       </ul>
     </div>
