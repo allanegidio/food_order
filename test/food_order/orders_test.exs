@@ -50,7 +50,7 @@ defmodule FoodOrder.OrdersTest do
       assert {:ok, %Order{} = order} = Orders.create_order(valid_attrs)
       assert order.address == "some address"
       assert order.phone_number == "some phone_number"
-      assert order.total_price == 42
+      assert order.total_price == Money.new(42)
       assert order.total_quantity == 42
     end
 
@@ -71,14 +71,14 @@ defmodule FoodOrder.OrdersTest do
       assert {:ok, %Order{} = order} = Orders.update_order(order, update_attrs)
       assert order.address == "some updated address"
       assert order.phone_number == "some updated phone_number"
-      assert order.total_price == 43
+      assert order.total_price == Money.new(43)
       assert order.total_quantity == 43
     end
 
     test "update_order/2 with invalid data returns error changeset" do
       order = OrdersFixtures.order_fixture()
       assert {:error, %Ecto.Changeset{}} = Orders.update_order(order, @invalid_attrs)
-      assert order = Orders.get_order!(order.id)
+      assert order == Orders.get_order!(order.id)
     end
 
     test "delete_order/1 deletes the order" do

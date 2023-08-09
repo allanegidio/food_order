@@ -2,8 +2,6 @@ defmodule FoodOrder.Orders.Handlers.HandleUpdateOrderStatusTest do
   use FoodOrder.DataCase
 
   alias FoodOrder.OrdersFixtures
-  alias FoodOrder.AccountsFixtures
-  alias FoodOrder.ProductsFixtures
   alias FoodOrder.Orders.Handlers.HandleUpdateOrderStatus
 
   @tag :esse

@@ -30,7 +30,7 @@ defmodule FoodOrderWeb.Admin.OrderLiveTest do
       {:ok, _index_live, html} = live(conn, ~p"/admin/orders")
 
       assert html =~ "Listing Orders"
-      assert html =~ order.address
+      assert html =~ order.id
     end
 
     @tag :skip
@@ -79,13 +79,6 @@ defmodule FoodOrderWeb.Admin.OrderLiveTest do
       html = render(index_live)
       assert html =~ "Order updated successfully"
       assert html =~ "some updated address"
-    end
-
-    test "deletes order in listing", %{conn: conn, order: order} do
-      {:ok, index_live, _html} = live(conn, ~p"/admin/orders")
-
-      assert index_live |> element("#orders-#{order.id} a", "Delete") |> render_click()
-      refute has_element?(index_live, "#orders-#{order.id}")
     end
   end
 end

@@ -1,7 +1,6 @@
 defmodule FoodOrderWeb.Customer.OrderLive.IndexTest do
   use FoodOrderWeb.ConnCase
 
-  alias FoodOrder.ProductsFixtures
   alias FoodOrder.OrdersFixtures
 
   import Phoenix.LiveViewTest
