@@ -37,13 +37,13 @@ Accounts.register_user(%{
   role: "USER"
 })
 
-for _ <- 1..10,
-    do:
-      Orders.create_order(%{
-        address: "some address #{System.unique_integer([:positive])}",
-        phone_number: "some phone_number #{System.unique_integer([:positive])}",
-        total_price: System.unique_integer([:positive]),
-        total_quantity: System.unique_integer([:positive]),
-        user_id: user.id,
-        status: :not_started
-      })
+# for _ <- 1..10,
+#     do:
+#       Orders.create_order(%{
+#         address: "some address #{System.unique_integer([:positive])}",
+#         phone_number: "some phone_number #{System.unique_integer([:positive])}",
+#         total_price: System.unique_integer([:positive]),
+#         total_quantity: System.unique_integer([:positive]),
+#         user_id: user.id,
+#         status: :not_started
+#       })
