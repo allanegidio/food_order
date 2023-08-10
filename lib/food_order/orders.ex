@@ -68,6 +68,21 @@ defmodule FoodOrder.Orders do
   end
 
   @doc """
+  Returns the list possible status values with index.
+
+  ## Examples
+
+      iex> list_orders_by_user_id(:not_started)
+      [not_started: 1, preparing: 2 ...]
+
+  """
+  def list_status() do
+    Order
+    |> Ecto.Enum.values(:status)
+    |> Enum.with_index()
+  end
+
+  @doc """
   Gets a single order.
 
   Raises `Ecto.NoResultsError` if the Order does not exist.
