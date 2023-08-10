@@ -33,6 +33,7 @@ defmodule FoodOrder.OrdersFixtures do
   """
   def order_with_items_fixture(user \\ nil, attrs \\ %{}) do
     user = user || AccountsFixtures.user_fixture()
+
     product_1 = ProductsFixtures.product_fixture()
     product_2 = ProductsFixtures.product_fixture()
     product_3 = ProductsFixtures.product_fixture()
