@@ -4,7 +4,6 @@ defmodule FoodOrder.Orders.Handlers.HandleUpdateOrderStatusTest do
   alias FoodOrder.OrdersFixtures
   alias FoodOrder.Orders.Handlers.HandleUpdateOrderStatus
 
-  @tag :esse
   test "return orders by user id" do
     order = OrdersFixtures.order_with_items_fixture()
 
