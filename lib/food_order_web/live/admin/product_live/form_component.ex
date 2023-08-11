@@ -5,48 +5,19 @@ defmodule FoodOrderWeb.Admin.ProductLive.FormComponent do
   alias FoodOrder.Products.Product
 
   @impl true
-  def render(assigns) do
-    ~H"""
-    <div>
-      <.header>
-        <%= @title %>
-        <:subtitle>Use this form to manage product records in your database.</:subtitle>
-      </.header>
-
-      <.simple_form
-        for={@form}
-        id="product-form"
-        phx-target={@myself}
-        phx-change="validate"
-        phx-submit="save"
-      >
-        <.input field={@form[:name]} type="text" label="Name" />
-        <.input field={@form[:price]} label="Price" />
-        <.input
-          field={@form[:size]}
-          type="select"
-          label="Size"
-          prompt="Choose a value"
-          options={Product.size_values()}
-        />
-        <.input field={@form[:description]} type="text" label="Description" />
-        <.input field={@form[:image_url]} type="text" label="Image URL" />
-        <:actions>
-          <.button phx-disable-with="Saving...">Save Product</.button>
-        </:actions>
-      </.simple_form>
-    </div>
-    """
-  end
-
-  @impl true
   def update(%{product: product} = assigns, socket) do
     changeset = Products.change_product(product)
 
-    {:ok,
-     socket
-     |> assign(assigns)
-     |> assign_form(changeset)}
+    socket =
+      socket
+      |> assign(assigns)
+      |> assign_form(changeset)
+      |> allow_upload(:image_url,
+        accept: [".jpeg", ".jpg", ".png"],
+        max_entries: 3
+      )
+
+    {:ok, socket}
   end
 
   @impl true
@@ -62,6 +33,12 @@ defmodule FoodOrderWeb.Admin.ProductLive.FormComponent do
   def handle_event("save", %{"product" => product_params}, socket) do
     save_product(socket, socket.assigns.action, product_params)
   end
+
+  def handle_event("cancel", %{"image" => image}, socket) do
+    {:noreply, cancel_upload(socket, :image_url, image)}
+  end
+
+  def error_to_string(:too_large), do: "Too large"
 
   defp save_product(socket, :edit, product_params) do
     case Products.update_product(socket.assigns.product, product_params) do
@@ -98,4 +75,70 @@ defmodule FoodOrderWeb.Admin.ProductLive.FormComponent do
   end
 
   defp notify_parent(msg), do: send(self(), {__MODULE__, msg})
+
+  @impl true
+  def render(assigns) do
+    ~H"""
+    <div>
+      <.header>
+        <%= @title %>
+        <:subtitle>Use this form to manage product records in your database.</:subtitle>
+      </.header>
+
+      <.simple_form
+        for={@form}
+        id="product-form"
+        phx-target={@myself}
+        phx-change="validate"
+        phx-submit="save"
+      >
+        <.input field={@form[:name]} type="text" label="Name" />
+        <.input field={@form[:price]} label="Price" />
+        <.input
+          field={@form[:size]}
+          type="select"
+          label="Size"
+          prompt="Choose a value"
+          options={Product.size_values()}
+        />
+        <.input field={@form[:description]} type="text" label="Description" />
+        <.live_file_input upload={@uploads.image_url} />
+
+        <div>
+          Add up to <%= @uploads.image_url.max_entries %> photos
+          (max <%= trunc(@uploads.image_url.max_file_size / 1_000_000) %> mb each)
+        </div>
+
+        <article
+          :for={entry <- @uploads.image_url.entries}
+          class="flex items-center justify-between"
+          id={entry.ref}
+        >
+          <figure class="bg-orange-100 flex flex-col items-center justify-between rounded-md p-4">
+            <.live_img_preview entry={entry} class="w-16 h-16" />
+            <figcaption class="text-red-800"><%= entry.client_name %></figcaption>
+          </figure>
+
+          <div class="flex flex-col w-full items-center p-8">
+            <p
+              :for={err <- upload_errors(@uploads.image_url, entry)}
+              class="text-red-500 flex flex-col"
+            >
+              <%= error_to_string(err) %>
+            </p>
+            <progress value={entry.progress} max="100"><%= entry.progress %>%</progress>
+          </div>
+
+          <button phx-click="cancel" phx-target={@myself} phx-value-image={entry.ref}>
+            <Heroicons.x_mark outline class="h-5 w-5 text-red-500 stroke-current" />
+          </button>
+        </article>
+
+        <:actions>
+          <.button phx-disable-with="Saving...">Save Product</.button>
+        </:actions>
+      </.simple_form>
+    </div>
+    """
+  end
 end

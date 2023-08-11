@@ -233,4 +233,43 @@ defmodule FoodOrderWeb.Admin.ProductLiveTest do
       )
     end
   end
+
+  describe "upload images" do
+    setup [:register_and_log_in_admin]
+
+    @tag :esse
+    test "cancel when upload images", %{conn: conn} do
+      {:ok, view, _html} = live(conn, ~p"/admin/products")
+
+      assert view
+             |> element("header>div>div>a", "New Product")
+             |> render_click()
+
+      assert_patch(view, ~p"/admin/products/new")
+
+      assert has_element?(view, "#product-form")
+
+      upload =
+        file_input(view, "#product-form", :image_url, [
+          %{
+            last_modified: 1_594_171_879_000,
+            name: "myfile.jpeg",
+            content: " ",
+            type: "image/jpeg"
+          }
+        ])
+
+      assert render_upload(upload, "myfile.jpeg", 100) =~ "100%"
+
+      upload = hd(upload.entries)
+
+      assert has_element?(view, "##{upload["ref"]}")
+
+      assert view
+             |> element("[phx-click=cancel][phx-value-image=#{upload["ref"]}]")
+             |> render_click()
+
+      refute has_element?(view, "##{upload["ref"]}")
+    end
+  end
 end
