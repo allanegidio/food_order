@@ -180,7 +180,7 @@ defmodule FoodOrder.OrdersTest do
                not_started: 10,
                preparing: 0,
                received: 0
-             } == Orders.list_orders()
+             } == Orders.get_all_status_orders()
     end
   end
 end
