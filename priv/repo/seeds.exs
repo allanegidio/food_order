@@ -14,7 +14,7 @@ alias FoodOrder.Accounts
 alias FoodOrder.Products
 alias FoodOrder.Products.Product
 
-for _ <- 1..100,
+for _ <- 1..101,
     do:
       Products.create_product(%{
         description: "Some Description #{System.unique_integer([:positive])}",
