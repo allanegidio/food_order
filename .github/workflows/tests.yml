@@ -16,6 +16,9 @@ jobs:
       - name: Setup Elixir/Erlang Environment
         uses: ./.github/actions
 
+      - name: Reset DB
+        run: MIX_ENV=${{ env.MIX_ENV }} mix ecto.reset
+
       - name: Check coverage and tests
         run: mix coveralls.html
         env:

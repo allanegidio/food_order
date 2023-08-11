@@ -37,7 +37,7 @@ Accounts.register_user(%{
   role: "USER"
 })
 
-for _ <- 1..11,
+for _ <- 1..10,
     do:
       Orders.create_order(%{
         address: "some address #{System.unique_integer([:positive])}",
