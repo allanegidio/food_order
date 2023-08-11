@@ -1,4 +1,4 @@
-defmodule FoodOrderWeb.CartLive.CartDetails.CartItemTest do
+defmodule FoodOrderWeb.CartLive.CartDetails.Item.CartItemTest do
   use FoodOrderWeb.ConnCase
 
   import FoodOrder.ProductsFixtures
@@ -104,9 +104,12 @@ defmodule FoodOrderWeb.CartLive.CartDetails.CartItemTest do
       assert has_element?(view, "[data-role=items][data-id=#{product.id}]", "3 Item(s)")
     end
 
+    @tag :esse
     test "remove item", %{conn: conn} do
       product = product_fixture()
+
       {:ok, view, _html} = live(conn, ~p"/")
+
       product_element = build_product_element(product.id)
 
       view
@@ -118,6 +121,7 @@ defmodule FoodOrderWeb.CartLive.CartDetails.CartItemTest do
       assert has_element?(view, "[data-role=items][data-id=#{product.id}]", "2 Item(s)")
 
       event(view, product.id, "remove")
+
       refute has_element?(view, "[data-role=items][data-id=#{product.id}]", "2 Item(s)")
     end
   end

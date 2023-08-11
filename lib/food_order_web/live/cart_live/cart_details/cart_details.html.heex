@@ -20,18 +20,43 @@
       <span class="text-2xl font-bold ml-2"><%= @cart.total_price %></span>
     </div>
 
-    <form action="" class="mt-12">
-      <input
-        type="text"
-        class="border border-neutral-400 p-2 w-1/2 mb-4"
-        placeholder="Phone Number"
-      />
+    <%= if @current_user do %>
+      <form
+        action=""
+        class="mt-12"
+        id="confirm-order-form"
+        phx-target={@myself}
+        phx-submit="create_order"
+      >
+        <input
+          type="text"
+          name="phone_number"
+          class="p-2 w-1/2 mb-4 border border-neutral-400"
+          placeholder="Phone Number"
+        />
 
-      <div>
-        <button class="bg-red-500 text-white px-6 py-2 rounded-full font-bold mt-6">
-          Order now
-        </button>
-      </div>
-    </form>
+        <input
+          type="text"
+          name="address"
+          class="p-2 w-1/2 mb-4 border border-neutral-400"
+          placeholder="Address"
+        />
+
+        <input type="hidden" name="current_user_id" value={@current_user.id} />
+
+        <div>
+          <button class="px-6 py-2 mt-6 rounded-full font-bold bg-red-500 text-white">
+            Order now
+          </button>
+        </div>
+      </form>
+    <% else %>
+      <.link
+        href={~p"/users/settings"}
+        class="mt-6 px-6 py-2 inline-block font-bold rounded-full text-white bg-red-500"
+      >
+        Settings
+      </.link>
+    <% end %>
   </div>
 </div>
