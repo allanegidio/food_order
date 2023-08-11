@@ -4,7 +4,6 @@ defmodule FoodOrder.OrdersFixtures do
   entities via the `FoodOrder.Orders` context.
   """
 
-  alias FoodOrder.ProductsFixtures
   alias FoodOrder.AccountsFixtures
   alias FoodOrder.ProductsFixtures
 

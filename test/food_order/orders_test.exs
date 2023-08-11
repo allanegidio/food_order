@@ -4,8 +4,8 @@ defmodule FoodOrder.OrdersTest do
   alias FoodOrder.AccountsFixtures
   alias FoodOrder.Orders
   alias FoodOrder.Orders.StatusOrders
-  alias FoodOrder.ProductsFixtures
   alias FoodOrder.OrdersFixtures
+  alias FoodOrder.ProductsFixtures
 
   describe "orders" do
     alias FoodOrder.Orders.Order

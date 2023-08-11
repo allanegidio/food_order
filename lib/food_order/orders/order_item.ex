@@ -1,4 +1,8 @@
 defmodule FoodOrder.Orders.OrderItem do
+  @moduledoc """
+    Schema responsible for relationship between Order and Product
+  """
+
   use Ecto.Schema
   import Ecto.Changeset
 

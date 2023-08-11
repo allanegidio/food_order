@@ -2,8 +2,8 @@ defmodule FoodOrderWeb.Admin.OrderLive.Index do
   use FoodOrderWeb, :live_view
 
   alias FoodOrder.Orders
-  alias FoodOrderWeb.Admin.OrderLive.Index.SideMenu
   alias FoodOrderWeb.Admin.OrderLive.Index.Layer
+  alias FoodOrderWeb.Admin.OrderLive.Index.SideMenu
 
   @impl true
   def mount(_params, _session, socket) do

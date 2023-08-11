@@ -1,8 +1,8 @@
 defmodule FoodOrder.Orders.Handlers.HandleUpdateOrderStatusTest do
   use FoodOrder.DataCase
 
-  alias FoodOrder.OrdersFixtures
   alias FoodOrder.Orders.Handlers.HandleUpdateOrderStatus
+  alias FoodOrder.OrdersFixtures
 
   test "return orders by user id" do
     order = OrdersFixtures.order_with_items_fixture()

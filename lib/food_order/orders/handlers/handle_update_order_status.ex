@@ -1,6 +1,10 @@
 defmodule FoodOrder.Orders.Handlers.HandleUpdateOrderStatus do
-  alias FoodOrder.Orders.Events.UpdateOrder
+  @moduledoc """
+    A module responsible for handle all business logic to update order status
+  """
+
   alias FoodOrder.Orders
+  alias FoodOrder.Orders.Events.UpdateOrder
 
   def execute(order_id, old_status, new_status) do
     order = Orders.get_order!(order_id)

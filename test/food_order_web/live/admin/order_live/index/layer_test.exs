@@ -1,8 +1,8 @@
 defmodule FoodOrderWeb.Admin.OrderLive.Index.LayerTest do
   use FoodOrderWeb.ConnCase
 
-  alias FoodOrder.OrdersFixtures
   alias FoodOrder.Orders
+  alias FoodOrder.OrdersFixtures
 
   import Phoenix.LiveViewTest
 

@@ -1,6 +1,10 @@
 defmodule FoodOrder.Orders.Handlers.HandleCreateOrder do
-  alias FoodOrder.Orders
+  @moduledoc """
+    A module responsible for handle all business logic to create order
+  """
+
   alias FoodOrder.Carts
+  alias FoodOrder.Orders
   alias FoodOrder.Orders.Events.NewOrder
 
   def execute(%{"current_user_id" => current_user_id} = params) do

@@ -1,4 +1,8 @@
 defmodule FoodOrderWeb.Admin.OrderLive.Index.SideMenu do
+  @moduledoc """
+    A module responsible for take care of sidemenu live component
+  """
+
   use FoodOrderWeb, :live_component
 
   alias FoodOrder.Orders

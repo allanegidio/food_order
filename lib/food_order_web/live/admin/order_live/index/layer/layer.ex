@@ -1,4 +1,8 @@
 defmodule FoodOrderWeb.Admin.OrderLive.Index.Layer do
+  @moduledoc """
+    A module responsible for take care of Layer live component
+  """
+
   use FoodOrderWeb, :live_component
 
   alias FoodOrder.Orders

@@ -3,14 +3,14 @@ defmodule FoodOrder.Orders do
   The Orders context.
   """
 
-  alias FoodOrder.Repo
-  alias FoodOrder.Orders.Order
-  alias FoodOrder.Orders.OrderQuery
-  alias FoodOrder.Orders.StatusOrders
   alias FoodOrder.Orders.Events.NewOrder
   alias FoodOrder.Orders.Events.UpdateOrder
   alias FoodOrder.Orders.Handlers.HandleCreateOrder
   alias FoodOrder.Orders.Handlers.HandleUpdateOrderStatus
+  alias FoodOrder.Orders.Order
+  alias FoodOrder.Orders.OrderQuery
+  alias FoodOrder.Orders.StatusOrders
+  alias FoodOrder.Repo
 
   import Ecto.Query, warn: false
 
@@ -76,7 +76,7 @@ defmodule FoodOrder.Orders do
       [not_started: 1, preparing: 2 ...]
 
   """
-  def list_status() do
+  def list_status do
     Order
     |> Ecto.Enum.values(:status)
     |> Enum.with_index()
@@ -190,7 +190,7 @@ defmodule FoodOrder.Orders do
       %StatusOrders{not_started: 10, ...}
 
   """
-  def get_all_status_orders() do
+  def get_all_status_orders do
     not_started_query = OrderQuery.filter_by_status(Order, :not_started)
     received_query = OrderQuery.filter_by_status(Order, :received)
     preparing_query = OrderQuery.filter_by_status(Order, :preparing)

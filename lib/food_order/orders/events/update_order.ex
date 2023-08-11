@@ -1,4 +1,8 @@
 defmodule FoodOrder.Orders.Events.UpdateOrder do
+  @moduledoc """
+    A module responsible for have all events relate a update order
+  """
+
   alias Phoenix.PubSub
 
   @pubsub FoodOrder.PubSub
@@ -6,7 +10,7 @@ defmodule FoodOrder.Orders.Events.UpdateOrder do
   @topic_user "update_user_order"
   @topic_order "update_order"
 
-  def subscribe_admin(), do: PubSub.subscribe(@pubsub, @topic_admin)
+  def subscribe_admin, do: PubSub.subscribe(@pubsub, @topic_admin)
 
   def broadcast_admin({:ok, order}, old_status) do
     PubSub.broadcast(@pubsub, @topic_admin, {:updated_admin_order, order, old_status})

@@ -1,4 +1,8 @@
 defmodule FoodOrderWeb.Admin.OrderLive.Index.Layer.Card do
+  @moduledoc """
+    A module responsible for take care of Card live component
+  """
+
   use FoodOrderWeb, :live_component
 
   def render(assigns) do

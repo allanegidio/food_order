@@ -1,4 +1,8 @@
 defmodule FoodOrder.Orders.Order do
+  @moduledoc """
+    Schema of Orders
+  """
+
   use Ecto.Schema
 
   alias FoodOrder.Accounts.User

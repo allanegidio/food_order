@@ -1,9 +1,9 @@
 defmodule FoodOrder.Orders.Handlers.HandleCreateOrderTest do
   use FoodOrder.DataCase
 
+  alias FoodOrder.AccountsFixtures
   alias FoodOrder.Carts
   alias FoodOrder.Orders.Handlers.HandleCreateOrder
-  alias FoodOrder.AccountsFixtures
   alias FoodOrder.ProductsFixtures
 
   describe "Handle Create Order Tests" do
