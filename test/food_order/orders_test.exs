@@ -173,6 +173,8 @@ defmodule FoodOrder.OrdersTest do
 
   describe "all status orders" do
     test "get all status orders" do
+      Orders.list_orders() |> IO.inspect()
+
       assert %StatusOrders{
                all: 10,
                delivered: 0,
