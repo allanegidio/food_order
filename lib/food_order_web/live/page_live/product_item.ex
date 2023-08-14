@@ -19,7 +19,7 @@ defmodule FoodOrderWeb.PageLive.ProductItem do
 
   def product_info(assigns) do
     ~H"""
-    <img src={~p"/images/#{@product.image_url}"} class="h-40 mb-4 mx-auto" />
+    <img src={@product.image_url} alt="" class="h-40 mb-4 mx-auto" />
 
     <div class="text-center" data-role="product-item-details" data-id={@product.id}>
       <h2 class="mb-4 text-lg"><%= @product.name %></h2>

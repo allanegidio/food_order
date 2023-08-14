@@ -66,7 +66,8 @@ defmodule FoodOrder.MixProject do
       {:sobelow, "~> 0.12", only: [:dev, :test], runtime: false},
       {:git_ops, "~> 2.6.0", only: [:dev]},
       {:heroicons, "~> 0.5.0"},
-      {:money, "~> 1.12"}
+      {:money, "~> 1.12"},
+      {:mime, "~> 2.0"}
     ]
   end
 

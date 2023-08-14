@@ -31,11 +31,15 @@ defmodule FoodOrderWeb.Admin.ProductLive.FormComponent do
   end
 
   def handle_event("save", %{"product" => product_params}, socket) do
+    {[image_url | _], []} = uploaded_entries(socket, :image_url)
+    image_url = ~p"/uploads/#{get_file_name(image_url)}"
+    product_params = Map.put(product_params, "image_url", image_url)
+
     save_product(socket, socket.assigns.action, product_params)
   end
 
-  def handle_event("cancel", %{"image" => image}, socket) do
-    {:noreply, cancel_upload(socket, :image_url, image)}
+  def handle_event("cancel", %{"ref" => ref}, socket) do
+    {:noreply, cancel_upload(socket, :image_url, ref)}
   end
 
   def error_to_string(:too_large), do: "Too large"
@@ -43,6 +47,8 @@ defmodule FoodOrderWeb.Admin.ProductLive.FormComponent do
   defp save_product(socket, :edit, product_params) do
     case Products.update_product(socket.assigns.product, product_params) do
       {:ok, product} ->
+        build_image_url(socket)
+
         notify_parent({:saved, product})
 
         {:noreply,
@@ -58,6 +64,8 @@ defmodule FoodOrderWeb.Admin.ProductLive.FormComponent do
   defp save_product(socket, :new, product_params) do
     case Products.create_product(product_params) do
       {:ok, product} ->
+        build_image_url(socket)
+
         notify_parent({:saved, product})
 
         {:noreply,
@@ -75,6 +83,19 @@ defmodule FoodOrderWeb.Admin.ProductLive.FormComponent do
   end
 
   defp notify_parent(msg), do: send(self(), {__MODULE__, msg})
+
+  defp get_file_name(entry) do
+    [ext | _] = MIME.extensions(entry.client_type)
+    "#{entry.uuid}.#{ext}"
+  end
+
+  defp build_image_url(socket) do
+    consume_uploaded_entries(socket, :image_url, fn %{path: path}, entry ->
+      file_name = get_file_name(entry)
+      dest = Path.join("priv/static/uploads", file_name)
+      {:ok, File.cp!(path, dest)}
+    end)
+  end
 
   @impl true
   def render(assigns) do
@@ -102,7 +123,10 @@ defmodule FoodOrderWeb.Admin.ProductLive.FormComponent do
           options={Product.size_values()}
         />
         <.input field={@form[:description]} type="text" label="Description" />
-        <.live_file_input upload={@uploads.image_url} />
+
+        <div class="container" phx-drop-target={@uploads.image_url.ref}>
+          <.live_file_input upload={@uploads.image_url} /> or drag and drop
+        </div>
 
         <div>
           Add up to <%= @uploads.image_url.max_entries %> photos
@@ -129,7 +153,7 @@ defmodule FoodOrderWeb.Admin.ProductLive.FormComponent do
             <progress value={entry.progress} max="100"><%= entry.progress %>%</progress>
           </div>
 
-          <button phx-click="cancel" phx-target={@myself} phx-value-image={entry.ref}>
+          <button phx-click="cancel" phx-target={@myself} phx-value-ref={entry.ref}>
             <Heroicons.x_mark outline class="h-5 w-5 text-red-500 stroke-current" />
           </button>
         </article>
