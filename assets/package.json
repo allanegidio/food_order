@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@mux/upchunk": "^3.2.0",
     "sortablejs": "^1.15.0"
   }
 }

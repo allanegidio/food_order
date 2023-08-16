@@ -3,6 +3,7 @@ defmodule FoodOrderWeb.Admin.ProductLive.FormComponent do
 
   alias FoodOrder.Products
   alias FoodOrder.Products.Product
+  alias FoodOrderWeb.Admin.ProductLive.ImageUploadConfig
 
   @impl true
   def update(%{product: product} = assigns, socket) do
@@ -12,10 +13,7 @@ defmodule FoodOrderWeb.Admin.ProductLive.FormComponent do
       socket
       |> assign(assigns)
       |> assign_form(changeset)
-      |> allow_upload(:image_url,
-        accept: [".jpeg", ".jpg", ".png"],
-        max_entries: 3
-      )
+      |> allow_upload(:image_url, ImageUploadConfig.get_allow_options(:local))
 
     {:ok, socket}
   end
@@ -32,7 +30,9 @@ defmodule FoodOrderWeb.Admin.ProductLive.FormComponent do
 
   def handle_event("save", %{"product" => product_params}, socket) do
     {[image_url | _], []} = uploaded_entries(socket, :image_url)
-    image_url = ~p"/uploads/#{get_file_name(image_url)}"
+
+    image_url = ImageUploadConfig.get_image_url(image_url)
+
     product_params = Map.put(product_params, "image_url", image_url)
 
     save_product(socket, socket.assigns.action, product_params)
@@ -84,17 +84,8 @@ defmodule FoodOrderWeb.Admin.ProductLive.FormComponent do
 
   defp notify_parent(msg), do: send(self(), {__MODULE__, msg})
 
-  defp get_file_name(entry) do
-    [ext | _] = MIME.extensions(entry.client_type)
-    "#{entry.uuid}.#{ext}"
-  end
-
   defp build_image_url(socket) do
-    consume_uploaded_entries(socket, :image_url, fn %{path: path}, entry ->
-      file_name = get_file_name(entry)
-      dest = Path.join("priv/static/uploads", file_name)
-      {:ok, File.cp!(path, dest)}
-    end)
+    consume_uploaded_entries(socket, :image_url, &ImageUploadConfig.consume_entries/2)
   end
 
   @impl true
