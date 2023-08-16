@@ -1,8 +1,10 @@
 defmodule FoodOrderWeb.Admin.OrderLive.Index.LayerTest do
   use FoodOrderWeb.ConnCase
 
+  alias FoodOrder.Carts
   alias FoodOrder.Orders
   alias FoodOrder.OrdersFixtures
+  alias FoodOrder.ProductsFixtures
 
   import Phoenix.LiveViewTest
 
@@ -66,6 +68,24 @@ defmodule FoodOrderWeb.Admin.OrderLive.Index.LayerTest do
 
       assert has_element?(view, "#received>##{order.id}")
       refute has_element?(view, "#not_started>##{order.id}")
+    end
+
+    test "add card to not_started layer using the handle_info", %{conn: conn, user: user} do
+      {:ok, view, _html} = live(conn, ~p"/admin/orders")
+
+      product = ProductsFixtures.product_fixture()
+
+      Carts.create(user.id)
+      Carts.add_product(user.id, product)
+
+      {:ok, order} =
+        Orders.handle_create_order(%{
+          "address" => "Teste Address",
+          "phone_number" => "11987651234",
+          "current_user_id" => user.id
+        })
+
+      assert has_element?(view, "#not_started>##{order.id}")
     end
   end
 end
