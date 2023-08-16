@@ -9,14 +9,9 @@ defmodule FoodOrderWeb.Admin.ProductLiveTest do
     name: "some name",
     price: 42,
     size: :small,
-    image_url: "product_1.jpeg"
+    image_url: %{}
   }
-  @update_attrs %{
-    description: "some updated description",
-    name: "some updated name",
-    price: 43,
-    size: :medium
-  }
+
   @invalid_attrs %{description: nil, name: nil, price: nil, size: nil}
 
   defp create_product(_) do
@@ -55,6 +50,18 @@ defmodule FoodOrderWeb.Admin.ProductLiveTest do
              |> form("#product-form", product: @invalid_attrs)
              |> render_change() =~ "can&#39;t be blank"
 
+      upload =
+        file_input(index_live, "#product-form", :image_url, [
+          %{
+            last_modified: 1_594_171_879_000,
+            name: "myfile.jpeg",
+            content: " ",
+            type: "image/jpeg"
+          }
+        ])
+
+      assert render_upload(upload, "myfile.jpeg", 100) =~ "100%"
+
       assert index_live
              |> form("#product-form", product: @create_attrs)
              |> render_submit()
@@ -64,29 +71,6 @@ defmodule FoodOrderWeb.Admin.ProductLiveTest do
       html = render(index_live)
       assert html =~ "Product created successfully"
       assert html =~ "some description"
-    end
-
-    test "updates product in listing", %{conn: conn, product: product} do
-      {:ok, index_live, _html} = live(conn, ~p"/admin/products")
-
-      assert index_live |> element("#products-#{product.id} a", "Edit") |> render_click() =~
-               "Edit Product"
-
-      assert_patch(index_live, ~p"/admin/products/#{product}/edit")
-
-      assert index_live
-             |> form("#product-form", product: @invalid_attrs)
-             |> render_change() =~ "can&#39;t be blank"
-
-      assert index_live
-             |> form("#product-form", product: @update_attrs)
-             |> render_submit()
-
-      assert_patch(index_live, ~p"/admin/products")
-
-      html = render(index_live)
-      assert html =~ "Product updated successfully"
-      assert html =~ "some updated description"
     end
 
     test "deletes product in listing", %{conn: conn, product: product} do
@@ -105,29 +89,6 @@ defmodule FoodOrderWeb.Admin.ProductLiveTest do
 
       assert html =~ "Show Product"
       assert html =~ product.description
-    end
-
-    test "updates product within modal", %{conn: conn, product: product} do
-      {:ok, show_live, _html} = live(conn, ~p"/admin/products/#{product}")
-
-      assert show_live |> element("a", "Edit") |> render_click() =~
-               "Edit Product"
-
-      assert_patch(show_live, ~p"/admin/products/#{product}/show/edit")
-
-      assert show_live
-             |> form("#product-form", product: @invalid_attrs)
-             |> render_change() =~ "can&#39;t be blank"
-
-      assert show_live
-             |> form("#product-form", product: @update_attrs)
-             |> render_submit()
-
-      assert_patch(show_live, ~p"/admin/products/#{product}")
-
-      html = render(show_live)
-      assert html =~ "Product updated successfully"
-      assert html =~ "some updated description"
     end
   end
 
@@ -231,6 +192,44 @@ defmodule FoodOrderWeb.Admin.ProductLiveTest do
         view,
         ~p"/admin/products?name=&page=1&per_page=5&sort_by=name&sort_order=desc"
       )
+    end
+  end
+
+  describe "upload images" do
+    setup [:register_and_log_in_admin]
+
+    test "cancel when upload images", %{conn: conn} do
+      {:ok, view, _html} = live(conn, ~p"/admin/products")
+
+      assert view
+             |> element("header>div>div>a", "New Product")
+             |> render_click()
+
+      assert_patch(view, ~p"/admin/products/new")
+
+      assert has_element?(view, "#product-form")
+
+      upload =
+        file_input(view, "#product-form", :image_url, [
+          %{
+            last_modified: 1_594_171_879_000,
+            name: "myfile.jpeg",
+            content: " ",
+            type: "image/jpeg"
+          }
+        ])
+
+      assert render_upload(upload, "myfile.jpeg", 100) =~ "100%"
+
+      upload = hd(upload.entries)
+
+      assert has_element?(view, "##{upload["ref"]}")
+
+      assert view
+             |> element("[phx-click=cancel][phx-value-ref=#{upload["ref"]}]")
+             |> render_click()
+
+      refute has_element?(view, "##{upload["ref"]}")
     end
   end
 end

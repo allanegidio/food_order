@@ -43,11 +43,7 @@ defmodule FoodOrderWeb.CartLive.CartDetails.Item.CartItem do
   def render(assigns) do
     ~H"""
     <div id={@id} data-role="item" class="flex items-center my-8 shadow-lg p-2 hover:bg-neutral-200">
-      <img
-        data-role="item-image"
-        src={~p"/images/#{@item.item.image_url}"}
-        class="h-16 w-16 rounded-full"
-      />
+      <img data-role="item-image" src={@item.item.image_url} class="h-16 w-16 rounded-full" />
 
       <div class="flex-1 ml-4">
         <h1><%= @item.item.name %></h1>

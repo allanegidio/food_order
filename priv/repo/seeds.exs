@@ -21,7 +21,7 @@ for _ <- 1..100,
         name: "Some Product #{System.unique_integer([:positive])}",
         price: System.unique_integer([:positive]),
         size: Enum.random(Product.size_values()),
-        image_url: "product_#{Enum.random(1..5)}.jpeg"
+        image_url: "/uploads/product_#{Enum.random(1..5)}.jpeg"
       })
 
 {:ok, user} =

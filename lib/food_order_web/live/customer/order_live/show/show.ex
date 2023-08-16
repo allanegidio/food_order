@@ -14,7 +14,6 @@ defmodule FoodOrderWeb.Customer.OrderLive.Show do
       Orders.subscribe_update_order(id)
     end
 
-    current_user = socket.assigns.current_user
     order = Orders.get_order!(id)
     list_status = Orders.list_status()
 
@@ -27,6 +26,7 @@ defmodule FoodOrderWeb.Customer.OrderLive.Show do
     {:noreply, socket}
   end
 
+  @impl true
   def handle_info({:updated_order, order}, socket) do
     socket = assign(socket, order: order)
 

@@ -9,7 +9,9 @@ defmodule FoodOrderWeb.CartLive.CartDetailsTest do
     test "create success order", %{conn: conn} do
       product = product_fixture()
       product_2 = product_fixture()
+
       {:ok, view, _html} = live(conn, ~p"/")
+
       product_element = build_product_element(product.id)
       product_2_element = build_product_element(product_2.id)
 
