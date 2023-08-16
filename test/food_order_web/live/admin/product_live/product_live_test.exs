@@ -266,7 +266,7 @@ defmodule FoodOrderWeb.Admin.ProductLiveTest do
       assert has_element?(view, "##{upload["ref"]}")
 
       assert view
-             |> element("[phx-click=cancel][phx-value-image=#{upload["ref"]}]")
+             |> element("[phx-click=cancel][phx-value-ref=#{upload["ref"]}]")
              |> render_click()
 
       refute has_element?(view, "##{upload["ref"]}")
