@@ -1,10 +1,6 @@
 defmodule FoodOrderWeb.Admin.ProductLive.ImageUploadConfig do
   alias FoodOrderWeb.Utils.SimpleS3Upload
 
-  def upload_options do
-    get_allow_options(Mix.env())
-  end
-
   def get_allow_options(:local) do
     [accept: ~w/.png .jpeg .jpg/, max_entries: 1]
   end
