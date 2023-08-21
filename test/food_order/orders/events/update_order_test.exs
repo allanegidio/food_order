@@ -17,6 +17,15 @@ defmodule FoodOrder.Orders.Events.UpdateOrderTest do
                Process.info(self(), :messages)
     end
 
+    test "error broadcast subscribe_admin message" do
+      UpdateOrder.subscribe_admin()
+      assert {:messages, []} == Process.info(self(), :messages)
+
+      UpdateOrder.broadcast_admin({:error, %{status: :preparing}})
+
+      assert {:messages, []} = Process.info(self(), :messages)
+    end
+
     test "subscribe_user" do
       user = user_fixture()
 
@@ -29,6 +38,17 @@ defmodule FoodOrder.Orders.Events.UpdateOrderTest do
                Process.info(self(), :messages)
     end
 
+    test "error broadcast subscribe_user message" do
+      user = user_fixture()
+
+      UpdateOrder.subscribe_user(user.id)
+      assert {:messages, []} == Process.info(self(), :messages)
+
+      UpdateOrder.broadcast_user({:error, %{status: :preparing, user_id: user.id}})
+
+      assert {:messages, []} = Process.info(self(), :messages)
+    end
+
     test "subscribe_order" do
       order = order_fixture()
 
@@ -39,6 +59,17 @@ defmodule FoodOrder.Orders.Events.UpdateOrderTest do
 
       assert {:messages, [{:updated_order, %{status: :preparing, id: order.id}}]} ==
                Process.info(self(), :messages)
+    end
+
+    test "error broadcast subscribe_order message" do
+      order = order_fixture()
+
+      UpdateOrder.subscribe_order(order.id)
+      assert {:messages, []} == Process.info(self(), :messages)
+
+      UpdateOrder.broadcast_order({:error, %{status: :preparing, id: order.id}})
+
+      assert {:messages, []} = Process.info(self(), :messages)
     end
   end
 end
