@@ -5,6 +5,7 @@
       "lib/food_order_web.ex",
       "lib/food_order_web/components/core_components.ex",
       "lib/food_order_web/live/page_live/page_live.ex",
+      "lib/food_order_web/utils/simple_s3_upload.ex",
       "lib/food_order_web/telemetry.ex",
       "lib/food_order_web/router.ex",
       "lib/food_order_web/views/error_helpers.ex",
