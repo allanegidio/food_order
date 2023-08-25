@@ -22,11 +22,9 @@ FROM ${BUILDER_IMAGE} as builder
 
 # install build dependencies
 RUN apt-get update -y && apt-get install -y build-essential git \
+    && curl -fsSL https://deb.nodesource.com/setup_18.60.0 | bash - \
+    && apt-get install -y nodejs npm \
     && apt-get clean && rm -f /var/lib/apt/lists/*_*
-
-# install nodejs
-RUN curl -fsSL https://deb.nodesource.com/setup_18.60.0 | bash -
-RUN apt-get install -y nodejs
 
 # check node js version
 RUN node -v
