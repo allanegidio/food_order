@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: food-order-service
+spec:
+  type: NodePort
+  selector:
+    component: web
+  ports:
+      # -> A porta exposta dentro do cluster, para por exemplo outro pod acessar
+    - port: 4050 
+      # -> Qualquer requisição que chegar na porta 4050 será redirecionada para a porta 4000 do container
+      # -> Ela é igual a porta do containerPort dentro do arquivo de Pod
+      targetPort: 4000 
+      # -> A porta exposta fora do cluster, para por exemplo acessar via browser
+      nodePort: 31515
+

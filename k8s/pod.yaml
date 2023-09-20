@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: food-order-pod
+  labels:
+    component: web
+spec:
+  containers:
+    - name: food-order-container
+      image: docker.io/library/food_order:v1
+      ports:
+        - containerPort: 4000
+      envFrom:
+        - secretRef:
+            name: food-order-secret
