@@ -13,5 +13,5 @@ spec:
       # -> Ela é igual a porta do containerPort dentro do arquivo de Pod
       targetPort: 4000 
       # -> A porta exposta fora do cluster, para por exemplo acessar via browser
-      nodePort: 31515
+      nodePort: 30000
 

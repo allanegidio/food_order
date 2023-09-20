@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: food-order-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      component: web
+  template:
+    metadata:
+      labels:
+        component: web
+    spec:
+      containers:
+        - name: food-order-container
+          image: 'docker.io/library/food_order:v1'
+          ports:
+            - containerPort: 4000
+          envFrom:
+            - secretRef:
+                name: food-order-secret
