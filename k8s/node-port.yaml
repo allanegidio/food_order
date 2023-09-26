@@ -10,7 +10,7 @@
 #       # -> A porta exposta dentro do cluster, para por exemplo outro pod acessar
 #     - port: 4050 
 #       # -> Qualquer requisição que chegar na porta 4050 será redirecionada para a porta 4000 do container
-#       # -> Ela é igual a porta do containerPort dentro do arquivo de Pod
+#       # -> Ela é igual a porta do containerPort dentro do arquivo de Pod ou deployment
 #       targetPort: 4000 
 #       # -> A porta exposta fora do cluster, para por exemplo acessar via browser
 #       nodePort: 30000
