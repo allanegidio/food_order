@@ -6,10 +6,19 @@ replicaCount: 3
 replicaPostgresCount: 1
 
 image:
-  repository: nginx
+  repository: docker.io/library/food_order
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: v1
+
+containerPort: 4000
+
+database:
+  pgUser: postgres
+  pgPassword: postgres
+  pgHost: ecto://postgres:postgres@postgres-cluster-ip:5432/food_order
+  poolSize: 10
+
 
 imagePullSecrets: []
 nameOverride: ""
