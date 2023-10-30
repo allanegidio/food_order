@@ -5,7 +5,7 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    component: web
+    component: postgres
   ports:
       # -> A porta exposta dentro do cluster, para por exemplo outro pod acessar
     - port: 5432 
