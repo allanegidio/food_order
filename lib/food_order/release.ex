@@ -23,7 +23,7 @@ defmodule FoodOrder.Release do
     load_app()
 
     for repo <- repos() do
-      {:ok, _, _} = Ecto.Migrator.with_repo(repo, fn _repo -> Code.eval_file("priv/repo/seeds.exs") end)
+      {:ok, _, _} = Ecto.Migrator.with_repo(repo, fn _repo -> Code.eval_file("/app/lib/food_order-0.1.0/priv/repo/seeds.exs") end)
     end
   end
 
